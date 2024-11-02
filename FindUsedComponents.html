@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dependency Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input[type="text"] {
+            padding: 5px;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        #resultTable {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Dependency Search</h1>
+
+    <button id="directoryButton">Select Directory</button>
+    <label for="versionInput">Enter version to filter (e.g., 1.0.0):</label>
+    <input type="text" id="versionInput" placeholder="Enter version to filter" />
+
+    <label for="componentInput">Enter component name (in 1-3 words):</label>
+    <input type="text" id="componentInput" placeholder="Enter component name" />
+
+    <button id="searchButton">Start Search</button>
+
+    <table id="resultTable">
+        <thead>
+            <tr>
+                <th>Dependency</th>
+                <th>Version</th>
+                <th>Component Name</th>
+                <th>Files Found In</th>
+            </tr>
+        </thead>
+        <tbody id="resultBody"></tbody>
+    </table>
+</div>
+
+<script>
+    let selectedDirectoryHandle;
+
+    // Use File System Access API to select a directory
+    document.getElementById('directoryButton').addEventListener('click', async () => {
+        try {
+            selectedDirectoryHandle = await window.showDirectoryPicker();
+            alert("Directory selected successfully!");
+        } catch (error) {
+            console.error("Directory selection cancelled.", error);
+        }
+    });
+
+    // Function to remove comments from JavaScript content
+    function removeJsComments(content) {
+        const commentPattern = /(\/\/.*?$|\/\*.*?\*\/)/gs;
+        return content.replace(commentPattern, "");
+    }
+
+    // Check if a string is in PascalCase or fully uppercase
+    function isPascalCase(text) {
+        const pascalCasePattern = /^[A-Z][a-zA-Z0-9]*$/;
+        return pascalCasePattern.test(text) || text === text.toUpperCase();
+    }
+
+    // Convert a string to PascalCase, preserving all-uppercase words
+    function toPascalCase(text) {
+        return text.split(/\s+/).map(word => word === word.toUpperCase() ? word : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join('');
+    }
+
+    // Normalize component name
+    function normalizeComponentName(inputName) {
+        return isPascalCase(inputName) ? inputName : toPascalCase(inputName);
+    }
+
+    // Process dependencies
+    function processDependencies(dependencies, filePath, dependenciesInfo) {
+        dependencies.forEach(dep => {
+            const depParts = dep.split('/');
+            if (depParts.length >= 2) {
+                const version = depParts[depParts.length - 2].trim();
+                const componentName = depParts[depParts.length - 1].replace('.component.xml', '').trim();
+                const fileName = filePath;
+
+                if (dependenciesInfo[dep]) {
+                    dependenciesInfo[dep].files.add(fileName);
+                } else {
+                    dependenciesInfo[dep] = { version, componentName, files: new Set([fileName]) };
+                }
+            }
+        });
+    }
+
+    // Search dependencies in files
+    async function searchDependenciesInFiles(directoryHandle) {
+        const dependenciesInfo = {};
+        const dependencyPatternJs = /static\s+get\s+dependencies\s*\(\)\s*{\s*return\s*\[([^\]]*)\]/gs;
+        const dependencyPatternHtml = /<link\s+[^>]*href\s*=\s*["']([^"']+.component.xml)["']/gi;
+
+        for await (const [name, handle] of directoryHandle.entries()) {
+            if (handle.kind === 'file' && (name.endsWith('.js') || name.endsWith('.html'))) {
+                const file = await handle.getFile();
+                const content = await file.text();
+
+                if (name.endsWith('.js')) {
+                    const cleanedContent = removeJsComments(content);
+                    let match;
+                    while ((match = dependencyPatternJs.exec(cleanedContent)) !== null) {
+                        const dependenciesStr = match[1];
+                        const dependencies = dependenciesStr.split(',').map(dep => dep.trim().replace(/['"]/g, ''));
+                        processDependencies(dependencies, name, dependenciesInfo);
+                    }
+                } else if (name.endsWith('.html')) {
+                    let match;
+                    while ((match = dependencyPatternHtml.exec(content)) !== null) {
+                        processDependencies([match[1]], name, dependenciesInfo);
+                    }
+                }
+            }
+        }
+
+        return dependenciesInfo;
+    }
+
+    // Handle Search button click
+    document.getElementById('searchButton').addEventListener('click', async () => {
+        const versionFilter = document.getElementById('versionInput').value.trim();
+        const componentFilter = document.getElementById('componentInput').value.trim();
+        const componentFilterNormalized = normalizeComponentName(componentFilter);
+
+        if (!selectedDirectoryHandle) {
+            alert("Please select a directory first.");
+            return;
+        }
+
+        const dependenciesInfo = await searchDependenciesInFiles(selectedDirectoryHandle);
+
+        // Display results
+        const resultBody = document.getElementById('resultBody');
+        resultBody.innerHTML = '';
+        let row = 0;
+        for (const dep in dependenciesInfo) {
+            const { version, componentName, files } = dependenciesInfo[dep];
+            if ((!versionFilter || version.toLowerCase() === versionFilter.toLowerCase()) &&
+                (!componentFilter || componentName.toLowerCase() === componentFilterNormalized.toLowerCase())) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${dep}</td>
+                    <td>${version}</td>
+                    <td>${componentName}</td>
+                    <td>${Array.from(files).join(', ')}</td>
+                `;
+                resultBody.appendChild(tr);
+                row++;
+            }
+        }
+
+        // Show table if results found
+        document.getElementById('resultTable').style.display = row > 0 ? 'table' : 'none';
+        if (row === 0) {
+            alert('No dependencies found.');
+        }
+    });
+</script>
+
+</body>
+</html>

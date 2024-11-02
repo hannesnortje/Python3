@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Component Creator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        #new-component {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="new-component">
+        <h2>Create New Component</h2>
+        <form id="newComponentForm">
+            <!-- Question 1: Descriptive Name -->
+            <label for="componentName">Component Name (2-3 words):</label>
+            <input type="text" id="componentName" name="componentName" placeholder="Enter component name" required />
+
+            <!-- Question 2: Choose Version -->
+            <label for="componentVersion">Choose a version for the component:</label>
+            <select id="componentVersion" name="componentVersion">
+                <option value="3.1.0">3.1.0</option>
+                <option value="3.1.1">3.1.1</option>
+            </select>
+
+            <!-- Question 3: Short Description -->
+            <label for="componentDescription">Short Description:</label>
+            <textarea id="componentDescription" name="componentDescription" placeholder="What should the component do?" required></textarea>
+
+            <!-- Directory Selection -->
+            <label for="directoryPicker">Choose the directory:</label>
+            <button type="button" id="directoryPicker">Select Directory</button>
+            <p id="selectedDirectory"></p>
+
+            <!-- Submit Button -->
+            <button type="submit" id="submitComponent">Create Component</button>
+        </form>
+    </div>
+
+    <script>
+        let selectedDirectoryHandle;
+
+        // Utility function to convert name to PascalCase
+        function toPascalCase(str) {
+            return str
+                .replace(/[^a-zA-Z0-9 ]/g, '')  // Remove non-alphanumeric characters
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                .join('');
+        }
+
+        // Utility function to convert PascalCase to KebabCase
+        function toKebabCase(str) {
+            return str
+                .replace(/[^a-zA-Z0-9 ]/g, '')  // Remove non-alphanumeric characters
+                .split(' ')
+                .map(word => word.toLowerCase())
+                .join('-');
+        }
+
+        // Handle directory selection
+        async function selectDirectory() {
+            try {
+                // Prompt user to choose a directory
+                selectedDirectoryHandle = await window.showDirectoryPicker();
+                // Display the selected directory in the UI
+                document.getElementById('selectedDirectory').textContent = `Selected Directory: ${selectedDirectoryHandle.name}`;
+            } catch (error) {
+                console.error('Error selecting directory:', error);
+                alert(`Failed to select directory. Error: ${error.message}`);
+            }
+        }
+
+        // Check if folder exists
+        async function checkIfFolderExists(directoryHandle, folderName) {
+            try {
+                // Try to get the folder handle; if it exists, return true
+                await directoryHandle.getDirectoryHandle(folderName);
+                return true;  // Folder exists
+            } catch (e) {
+                return false;  // Folder doesn't exist
+            }
+        }
+
+        // Create src, test, and populate the folders with the required files
+        async function createVersionStructure(versionFolderHandle, componentName, componentDescription) {
+            try {
+                // Create the src folder
+                const srcFolderHandle = await versionFolderHandle.getDirectoryHandle('src', { create: true });
+                // Create the subfolders inside src: html, js, less
+                const htmlFolderHandle = await srcFolderHandle.getDirectoryHandle('html', { create: true });
+                const jsFolderHandle = await srcFolderHandle.getDirectoryHandle('js', { create: true });
+                const lessFolderHandle = await srcFolderHandle.getDirectoryHandle('less', { create: true });
+
+                // Create the weBeans folder inside src/html
+                const weBeansFolderHandle = await htmlFolderHandle.getDirectoryHandle('weBeans', { create: true });
+
+                // Convert to PascalCase and KebabCase
+                const pascalCaseName = toPascalCase(componentName);
+                const kebabCaseName = toKebabCase(componentName);
+
+                // Create the PascalCase .weBean.html file inside weBeans with dynamic content
+                const weBeanFileName = `${pascalCaseName}.weBean.html`;
+                const weBeanFileHandle = await weBeansFolderHandle.getFileHandle(weBeanFileName, { create: true });
+
+                // Template content with PascalCase and KebabCase placeholders replaced
+                const weBeanFileContent = `<template id="${pascalCaseName}" is="${kebabCaseName}">
+    <div id="\$-{this.id}" class="${kebabCaseName}">
+        <div class="${kebabCaseName}__container" webean-role="\$-{this.viewId}:container"></div>
+    </div>
+</template>`;
+
+                // Write the dynamic content to the weBean HTML file
+                const writableWeBeanFile = await weBeanFileHandle.createWritable();
+                await writableWeBeanFile.write(weBeanFileContent);
+                await writableWeBeanFile.close();
+
+                // Create the PascalCase .class.js file inside src/js
+                const classJsFileName = `${pascalCaseName}.class.js`;
+                const classJsFileHandle = await jsFolderHandle.getFileHandle(classJsFileName, { create: true });
+
+                // JavaScript content with PascalCase, KebabCase, and description placeholders replaced
+                const classJsFileContent = `
+var ${pascalCaseName}  = Namespace.declare("tla.EAM.layer3",
+    class ${pascalCaseName}  extends Interface {
+        static get dependencies() {
+            return this.defaultImplementationClass.dependencies;
+        }
+
+        static get weBeanUnitPaths() {
+            return this.defaultImplementationClass.weBeanUnitPaths;
+        }
+
+        static get overwriteServerDescriptor() {
+            return this.defaultImplementationClass.overwriteServerDescriptor;
+        }
+
+        static get eamLayer() {
+            return 3;
+        }
+    }
+);
+
+var Default${pascalCaseName}  = Namespace.declare("com.sfsre",
+    class Default${pascalCaseName}  extends UcpComponent {
+        static get implements() {
+            return [${pascalCaseName}];
+        }
+
+        static get overwriteServerDescriptor() {
+            return true;
+        }
+
+        static get dependencies() {
+            return [
+                // "/EAMD.ucp/...",
+            ];
+        }
+
+        static get weBeanUnitPaths() {
+            return [
+                "./src/html/weBeans/${pascalCaseName}.weBean.html",
+            ];
+        }
+
+        static start() {
+            UcpComponentSupport.importLink(this.IOR.loader.basePath + "/src/less/" + this.name + ".less", "stylesheet/less", "text/css");
+        }
+
+        constructor() {
+            super();
+        }
+
+        init() {
+            super.init();
+            this.model = {
+                name: "${pascalCaseName}",
+                description: "${componentDescription}",
+                badge: "generated",
+            };
+            this.model.autoUpdate = true;
+            this.actionIndex = Thinglish.createActionIndexOf(${pascalCaseName}, this);
+            return this;
+        }
+
+        createDefaultView() {
+            return new ${pascalCaseName}DefaultView()
+        }
+    }
+);
+
+var ${pascalCaseName}DefaultView = Namespace.declare("tla.EAM.layer5",
+    class ${pascalCaseName}DefaultView extends DefaultView {
+
+        constructor() {
+            super();
+        }
+
+        init(ucpComponent) {
+            super.init(ucpComponent);
+            return this;
+        }
+
+        onDomReady(view) {
+        }
+    }
+);`;
+
+                // Write the content to the class.js file
+                const writableClassJsFile = await classJsFileHandle.createWritable();
+                await writableClassJsFile.write(classJsFileContent);
+                await writableClassJsFile.close();
+
+                // Create the PascalCase Default.less file inside src/less
+                const lessFileName = `Default${pascalCaseName}.less`;
+                const lessFileHandle = await lessFolderHandle.getFileHandle(lessFileName, { create: true });
+
+                // Write content to the .less file with PascalCase and KebabCase placeholders replaced
+                const lessFileContent = `@import "@{schema}";
+
+.${kebabCaseName} {
+    .onDragenter & {
+        background: @dropTargetHighlight;
+    }
+}`;
+
+                // Write the content to the .less file
+                const writableLessFile = await lessFileHandle.createWritable();
+                await writableLessFile.write(lessFileContent);
+                await writableLessFile.close();
+
+                // Create the test folder
+                const testFolderHandle = await versionFolderHandle.getDirectoryHandle('test', { create: true });
+                // Create the subfolders inside test: html, js
+                const testHtmlFolderHandle = await testFolderHandle.getDirectoryHandle('html', { create: true });
+                await testFolderHandle.getDirectoryHandle('js', { create: true });
+
+                // Create the PascalCase .html file inside test/html
+                const testHtmlFileName = `${pascalCaseName}.html`;
+                const testHtmlFileHandle = await testHtmlFolderHandle.getFileHandle(testHtmlFileName, { create: true });
+
+                // Write content to the .html file with the required placeholders
+                const componentPath = `/${selectedDirectoryHandle.name}/${versionFolderHandle.name}/${pascalCaseName}.component.xml`;
+                const testHtmlFileContent = `<!DOCTYPE html>
+<html onload="" lang="en">
+
+<head>
+  <title>ONCE ${pascalCaseName} Test 2.4.2</title>
+  <!-- on ONCE 2.4.2 -->
+
+  <meta charset="utf-8" />
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/EAMD.ucp/Components/com/metatrom/EAM/layer5/MyNet/2.4.2/src/assets/Metatrom_icon.png">
+
+  <script src="/EAMD.ucp/Components/tla/EAM/layer1/Thinglish/Once/2.4.2/src/js/Once.class.js" type="text/javascript"><\/script>
+
+  <link href="/EAMD.ucp/Components/org/lesscss/Less/3.8.1/Less.component.xml" rel="ucpComponent" type="text/html" />
+  <link href="/EAMD.ucp/Components/com/metatrom/EAM/layer5/MetatromTheme/3.8.1/MetatromTheme.component.xml" rel="ucpComponent" type="text/html" />
+
+  <link href="${componentPath}" rel="ucpComponent" type="text/html" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+  <script>
+    class App {
+      static get implements() {
+        return [];
+      }
+      static async start() {
+        var app = Default${pascalCaseName}.getInstance();
+
+        let metatromTheme = MetatromTheme.getInstance().init();
+        LessSingleton.model.currentTheme = metatromTheme;
+
+        await LessSingleton.compileNow();
+
+        ONCE.global.App = this;
+        ONCE.global.TheLastApp = app;
+        
+        app.init();
+        app.data.minHeight = "100%";
+        app.defaultView.append();
+      }
+      static init() {
+        console.debug("start loading App components...");
+        return "start loading App components...";
+      }
+
+      discover() {
+        return this.models;
+      }
+    }
+
+  <\/script>
+
+  <style type="text/css">
+    html,
+    body {
+      background-image: "/EAMD.ucp/Components/com/metatrom/EAM/layer5/MyNet/2.4.2/src/assets/Gradient 2.jpg";
+      height: 100%;
+      margin: 0;
+    }
+
+    @keyframes example {
+      from {
+        opacity: 0;
+        transform: scale(0) rotate(45deg);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    .loading {
+      display: none;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      animation: example 2s ease-out;
+    }
+
+    .loading:only-child {
+      display: flex;
+    }
+
+    #Logger {
+    }
+
+  </style>
+</head>
+
+<body style="height: 100% !important;">
+  <div class="loading">
+    <img class="loading" src="https://localhost:7443/EAMD.ucp/Components/com/metatrom/EAM/layer5/MyNet/2.4.2/src/assets/Metatrom_icon.png" />
+  </div>
+</body>
+
+<\/html>`;
+
+                // Write the content to the test html file
+                const writableTestHtmlFile = await testHtmlFileHandle.createWritable();
+                await writableTestHtmlFile.write(testHtmlFileContent);
+                await writableTestHtmlFile.close();
+
+                // Create the empty XML file with the component name in PascalCase
+                const xmlFileName = `${pascalCaseName}.component.xml`;
+                const xmlFileHandle = await versionFolderHandle.getFileHandle(xmlFileName, { create: true });
+
+                // Create an empty file by opening the file and closing it
+                const writable = await xmlFileHandle.createWritable();
+                await writable.close();
+
+                alert(`Version structure created successfully with src, test folders, weBeans folder, ${xmlFileName}, ${weBeanFileName}, ${classJsFileName}, ${lessFileName}, and ${testHtmlFileName}!`);
+            } catch (error) {
+                console.error('Error creating version structure:', error);
+                alert(`Failed to create version structure. Error: ${error.message}`);
+            }
+        }
+
+        // File System Access API: Create component folder with version folder
+        async function createVersionFolder(componentFolderHandle, version, componentName, componentDescription) {
+            // Check if the version folder already exists
+            const versionFolderExists = await checkIfFolderExists(componentFolderHandle, version);
+            if (versionFolderExists) {
+                alert(`Version ${version} folder already exists!`);
+                return;
+            }
+
+            // Create the version folder
+            const versionFolderHandle = await componentFolderHandle.getDirectoryHandle(version, { create: true });
+            
+            // Now create src, test, the weBean file, the .class.js file, the .less file, and the empty XML file
+            await createVersionStructure(versionFolderHandle, componentName, componentDescription);
+        }
+
+        // Create the component folder or use the selected one
+        async function createComponentAndVersionFolders(componentName, version, componentDescription) {
+            if (!selectedDirectoryHandle) {
+                alert('Please select a directory first.');
+                return;
+            }
+
+            // Convert the component name to PascalCase
+            const pascalCaseName = toPascalCase(componentName);
+
+            // Determine if the selected folder is already the component folder
+            let componentFolderHandle;
+            if (selectedDirectoryHandle.name === pascalCaseName) {
+                // The selected folder is the component folder
+                componentFolderHandle = selectedDirectoryHandle;
+            } else {
+                // The selected folder is the parent, so check or create the component folder
+                const componentFolderExists = await checkIfFolderExists(selectedDirectoryHandle, pascalCaseName);
+                if (componentFolderExists) {
+                    // Component folder exists, use the existing one
+                    componentFolderHandle = await selectedDirectoryHandle.getDirectoryHandle(pascalCaseName);
+                } else {
+                    // Component folder doesn't exist, create it
+                    componentFolderHandle = await selectedDirectoryHandle.getDirectoryHandle(pascalCaseName, { create: true });
+                }
+            }
+
+            // Create the version folder inside the component folder
+            await createVersionFolder(componentFolderHandle, version, pascalCaseName, componentDescription);
+        }
+
+        // Event listener for directory picker
+        document.getElementById('directoryPicker').addEventListener('click', selectDirectory);
+
+        // Handle form submission
+        document.getElementById('newComponentForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const componentName = document.getElementById('componentName').value;
+            const componentVersion = document.getElementById('componentVersion').value;
+            const componentDescription = document.getElementById('componentDescription').value;
+
+            // Log or handle form data
+            console.log(`Creating component:
+                Name: ${componentName}
+                Version: ${componentVersion}
+                Description: ${componentDescription}`);
+
+            // Create the component folder and version folder
+            await createComponentAndVersionFolders(componentName, componentVersion, componentDescription);
+        });
+    </script>
+</body>
+</html>

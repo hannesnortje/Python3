@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html onload="" lang="en">
+
+<head>
+  <title>ONCE [FTName | pascalcase] Test 3.1.0</title>
+  <!-- on ONCE 2.4.2 -->
+
+  <meta charset="utf-8" />
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/EAMD.ucp/Components/com/metatrom/EAM/layer5/MyNet/2.4.2/src/assets/Metatrom_icon.png">
+
+  <script src="/EAMD.ucp/Components/tla/EAM/layer1/Thinglish/Once/2.4.2/src/js/Once.class.js" type="text/javascript"></script>
+
+  <link href="/EAMD.ucp/Components/org/lesscss/Less/3.8.1/Less.component.xml" rel="ucpComponent" type="text/html" />
+  <link href="/EAMD.ucp/Components/com/metatrom/EAM/layer5/MetatromTheme/3.8.1/MetatromTheme.component.xml" rel="ucpComponent" type="text/html" />
+
+  <link href="[path to xml]" rel="ucpComponent" type="text/html" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+  <script>
+    class App {
+      static get implements() {
+        return [];
+      }
+      static async start() {
+        var app = Default[FTName | pascalcase].getInstance();
+
+        let metatromTheme = MetatromTheme.getInstance().init();
+        LessSingleton.model.currentTheme = metatromTheme;
+
+        await LessSingleton.compileNow();
+
+        ONCE.global.App = this;
+        ONCE.global.TheLastApp = app
+        // ONCE.register("WODA",app);
+        // ONCE.register("myNet",app);
+        
+        app.init();
+        app.data.minHeight = "100%"
+        app.defaultView.append();
+
+      }
+      static init() {
+        console.debug("start loading App components...");
+        return "start loading App components...";
+      }
+
+      discover() {
+        return this.models;
+      }
+    }
+
+  </script>
+
+  <style type="text/css">
+    html,
+    body {
+      background-image: "/EAMD.ucp/Components/com/metatrom/EAM/layer5/MyNet/2.4.2/src/assets/Gradient 2.jpg";
+      height: 100%;
+      margin: 0;
+          }
+
+    @keyframes example {
+      from {
+        opacity: 0;
+        -webkit-transform: scale(0);
+        -moz-transform: scale(0);
+        -o-transform: scale(0);
+        -ms-transform: scale(0);
+        transform: scale(0) rotate(45deg);
+      }
+
+      to {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -o-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    .loading {
+      display: none;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      animation: example 2s ease-out;
+    }
+
+    .loading:only-child {
+      display: flex;
+    }
+
+    /* .loading img {
+      max-width: 60vw;
+      max-height: 60vh;
+    } */
+
+    #Logger {
+      /*
+      position: fixed;
+      top: 95vh;
+
+      transition: top 0.8s;
+      */
+    }
+
+  </style>
+</head>
+
+<body style="height: 100% !important;">
+  <div class="loading">
+    <img class="loading" src="https://localhost:7443/EAMD.ucp/Components/com/metatrom/EAM/layer5/MyNet/2.4.2/src/assets/Metatrom_icon.png" />
+  </div>
+</body>
+
+</html>

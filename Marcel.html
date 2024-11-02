@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeMirror ChatGPT Interface</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.css">
+    <style>
+        body { display: flex; flex-direction: column; align-items: center; }
+        #container { display: flex; width: 100%; }
+        .editor { flex: 1; margin: 10px; }
+        #inputField { width: 80%; margin: 10px; }
+    </style>
+</head>
+<body>
+    <input type="text" id="inputField" placeholder="Type your input here...">
+    <div id="container">
+        <textarea id="leftEditor" class="editor"></textarea>
+        <textarea id="rightEditor" class="editor"></textarea>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/mode/javascript/javascript.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

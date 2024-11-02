@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Dependencies Logger</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            padding: 5px 0;
+            margin-left: 20px;
+        }
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Network Dependencies Logger</h1>
+
+    <!-- URL Input -->
+    <input type="text" id="urlInput" placeholder="Enter website URL here..." style="width: 100%; padding: 8px;">
+
+    <!-- Button to load URL and capture resources -->
+    <button id="logDependencies" style="margin-top: 10px; padding: 10px;">Load and Log Dependencies</button>
+
+    <!-- iFrame to load the URL -->
+    <iframe id="pageFrame"></iframe>
+
+    <!-- Tree view for displaying dependencies -->
+    <ul id="dependencyTree"></ul>
+</div>
+
+<script>
+    document.getElementById('logDependencies').addEventListener('click', function() {
+        const urlInput = document.getElementById('urlInput').value;
+        const dependencyTree = document.getElementById('dependencyTree');
+        const iframe = document.getElementById('pageFrame');
+
+        // Clear previous results
+        dependencyTree.innerHTML = '';
+        
+        // Validate the URL
+        if (!urlInput) {
+            alert("Please enter a valid URL.");
+            return;
+        }
+
+        // Load the URL into the iframe
+        iframe.src = urlInput;
+
+        // Once the iframe loads, wait for some time to ensure all resources are fetched
+        iframe.onload = function() {
+            // Set a timeout to wait for more resources to load
+            setTimeout(() => {
+                const resources = performance.getEntriesByType('resource');
+
+                // Build and display the dependency tree
+                const urls = resources.map(resource => resource.name);
+                buildDependencyTree(urls, dependencyTree);
+            }, 5000);  // Wait for 5 seconds (5000ms) after iframe onload event
+        };
+    });
+
+    function buildDependencyTree(urls, treeElement) {
+        const tree = {};
+
+        // Helper to build the tree structure
+        urls.forEach(url => {
+            const parsedUrl = new URL(url);
+            const parts = [parsedUrl.protocol + "//", parsedUrl.host, ...parsedUrl.pathname.split('/').filter(Boolean)];
+
+            let currentLevel = tree;
+            parts.forEach(part => {
+                if (!currentLevel[part]) {
+                    currentLevel[part] = {};
+                }
+                currentLevel = currentLevel[part];
+            });
+        });
+
+        // Recursive function to create the HTML structure for the tree
+        function addItems(parentElement, subtree) {
+            Object.keys(subtree).forEach(key => {
+                const li = document.createElement('li');
+                li.textContent = key;
+                parentElement.appendChild(li);
+
+                const childUl = document.createElement('ul');
+                li.appendChild(childUl);
+
+                addItems(childUl, subtree[key]);
+            });
+        }
+
+        // Start with the top-level tree
+        addItems(treeElement, tree);
+    }
+</script>
+
+</body>
+</html>

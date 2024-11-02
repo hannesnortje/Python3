@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Chart.js Examples</title>
+    <script src="chart.js"></script>
+
+    <style>
+        canvas {
+            width: 400px !important;
+            height: 300px !important;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Interactive Chart.js Examples</h1>
+
+    <h2>Pie Chart</h2>
+    <canvas id="pieChart"></canvas>
+
+    <h2>Bar Chart</h2>
+    <canvas id="barChart"></canvas>
+
+    <!-- ... Other chart canvases -->
+
+    <script>
+        // Create each chart using Chart.js
+
+        // Pie Chart with interaction options
+        new Chart(document.getElementById('pieChart').getContext('2d'), {
+            type: 'pie',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple'],
+                datasets: [{
+                    data: [12, 19, 3, 5, 2],
+                    backgroundColor: ['red', 'blue', 'yellow', 'green', 'purple']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        enabled: true
+                    }
+                }
+            }
+        });
+
+        // Bar Chart with hover and click interactions
+        new Chart(document.getElementById('barChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2],
+                    backgroundColor: ['red', 'blue', 'yellow', 'green', 'purple']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        enabled: true
+                    }
+                },
+                onClick: (e) => {
+                    const chart = Chart.getChart(e);
+                    const activePoints = chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
+                    if (activePoints.length > 0) {
+                        const firstPoint = activePoints[0];
+                        const label = chart.data.labels[firstPoint.index];
+                        const value = chart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+                        alert(`Clicked on: ${label} - Value: ${value}`);
+                    }
+                }
+            }
+        });
+
+        // You can apply similar interactivity settings for the rest of your charts.
+
+    </script>
+
+</body>
+</html>
