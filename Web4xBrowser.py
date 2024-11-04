@@ -259,15 +259,15 @@ class Browser(QMainWindow):
         menu = QMenu()
         
         copy_action = QAction("Copy", self)
-        copy_action.triggered.connect(lambda: self.current_browser().triggerPageAction(QWebEngineView.WebAction.Copy))
+        copy_action.triggered.connect(lambda: self.execute_javascript("document.execCommand('copy');"))
         menu.addAction(copy_action)
         
         cut_action = QAction("Cut", self)
-        cut_action.triggered.connect(lambda: self.current_browser().triggerPageAction(QWebEngineView.WebAction.Cut))
+        cut_action.triggered.connect(lambda: self.execute_javascript("document.execCommand('cut');"))
         menu.addAction(cut_action)
         
         paste_action = QAction("Paste", self)
-        paste_action.triggered.connect(lambda: self.current_browser().triggerPageAction(QWebEngineView.WebAction.Paste))
+        paste_action.triggered.connect(lambda: self.execute_javascript("document.execCommand('paste');"))
         menu.addAction(paste_action)
         
         save_action = QAction("Save As...", self)
@@ -283,6 +283,12 @@ class Browser(QMainWindow):
         menu.addAction(inspect_action)
         
         menu.exec(QCursor.pos())
+
+    def execute_javascript(self, script):
+        """Run JavaScript code in the current browser page."""
+        browser = self.current_browser()
+        if browser:
+            browser.page().runJavaScript(script)
 
     def save_as(self):
         page = self.current_browser().page()
