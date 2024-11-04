@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtCore import QUrl, Qt, pyqtSlot, pyqtSignal, QObject, QVariant, QDateTime, QSettings, QEvent
-from PyQt6.QtGui import QAction, QCursor, QFont, QIcon
+from PyQt6.QtGui import QAction, QCursor, QTextDocument
 from PyQt6.QtWidgets import QApplication, QMainWindow, QToolBar, QLineEdit, QMenu, QTabWidget, QWidget, QVBoxLayout, QFileDialog, QDialog, QLabel, QScrollArea, QStyle
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWebChannel import QWebChannel
@@ -302,10 +302,25 @@ class Browser(QMainWindow):
         print(f"Page saved as {file_name}")
 
     def print_page(self):
+        """Print the current page using Qt's QPrinter and QPrintDialog."""
         printer = QPrinter()
+        
+        # Open the print dialog to select a printer and configure settings
         dialog = QPrintDialog(printer, self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
-            self.current_browser().page().print(printer, lambda success: print("Printed" if success else "Print failed"))
+            # Fetch HTML content from the current page and print it
+            current_page = self.current_browser().page()
+            current_page.toHtml(lambda html: self.handle_print(html, printer))
+
+    def handle_print(self, html, printer):
+        """Handle printing the HTML content to the printer."""
+        # Convert HTML to a QTextDocument for printing
+        document = QTextDocument()
+        document.setHtml(html)
+        
+        # Print the document to the specified printer
+        document.print(printer)
+        print("Printing job completed.")
 
     def tab_context_menu(self, position):
         tab_index = self.tabs.tabBar().tabAt(position)
