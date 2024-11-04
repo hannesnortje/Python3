@@ -126,6 +126,8 @@ class Browser(QMainWindow):
         # Load saved tabs on startup
         self.load_saved_tabs()
 
+        self.update_url_bar()
+
         # If no saved tabs, add a default tab
         if self.tabs.count() == 0:
             self.add_new_tab(QUrl("https://www.example.com"), "Home")
