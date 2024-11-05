@@ -410,20 +410,41 @@ class Browser(QMainWindow):
 
     def inject_javascript(self):
         script = """
-            var script = document.createElement('script');
-            script.src = 'qrc:///qtwebchannel/qwebchannel.js';
-            document.head.appendChild(script);
-            script.onload = function () {
-                new QWebChannel(qt.webChannelTransport, function (channel) {
-                    window.codeExecutor = channel.objects.codeExecutor;
-                    
-                    window.codeExecutor.executeSignal("Hello from JavaScript!");
-                    
-                    window.codeExecutor.codeResultReady.connect(function(response) {
-                        console.log("Received from Python:", response);
-                    });
+            debugger;
+            document.addEventListener("DOMContentLoaded", function() {
+                // Attach drag and drop listeners to the entire document body
+                document.body.addEventListener("dragover", function(e) {
+                    e.preventDefault(); // Allow dropping
                 });
-            };
+
+                document.body.addEventListener("drop", function(e) {
+                    e.preventDefault(); // Prevent default browser behavior
+
+                    // Determine the drop target and access dropped data
+                    const target = e.target;
+                    const files = e.dataTransfer.files;
+                    const textData = e.dataTransfer.getData("text/plain");
+
+                    if (files.length > 0) {
+                        console.log("File(s) dropped:", files);
+
+                        // If `add()` function exists globally, call it with the dropped file
+                        if (typeof add === "function") {
+                            add(files[0]); // Pass the first dropped file to `add`
+                        }
+                    } else if (textData) {
+                        console.log("Text dropped:", textData);
+
+                        // Call `add()` with the dropped text data
+                        if (typeof this.add === "function") {
+                            debugger;
+                            this.add(textData);
+                        }
+                    } else {
+                        console.log("No recognizable data in drop.");
+                    }
+                });
+            });
         """
         self.current_browser().page().runJavaScript(script)
 
