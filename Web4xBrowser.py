@@ -1,11 +1,39 @@
 import sys
-from PyQt6.QtCore import QUrl, Qt, pyqtSlot, pyqtSignal, QObject, QVariant, QDateTime, QSettings, QEvent
+from PyQt6.QtCore import QUrl, Qt, QThread, pyqtSlot, pyqtSignal, QObject, QVariant, QDateTime, QSettings, QEvent, QRunnable, QThreadPool
 from PyQt6.QtGui import QAction, QCursor, QTextDocument
 from PyQt6.QtWidgets import QApplication, QMainWindow, QToolBar, QLineEdit, QMenu, QTabWidget, QWidget, QVBoxLayout, QFileDialog, QDialog, QLabel, QScrollArea, QStyle
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWebChannel import QWebChannel
 from PyQt6.QtPrintSupport import QPrinter, QPrintDialog
 from collections import defaultdict
+
+class DraggableTabWidget(QTabWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setAcceptDrops(True)  # Ensure the widget can accept drag events
+
+    def dragEnterEvent(self, event):
+        event.accept()  # Accept the drag event to indicate we can handle it
+
+    def dragMoveEvent(self, event):
+        pos = event.position().toPoint()  # Get the position as a QPoint
+        index = self.tabBar().tabAt(pos)
+        if index != -1 and index != self.currentIndex():
+            self.setCurrentIndex(index)  # Switch to the hovered tab
+        event.accept()
+
+    def dropEvent(self, event):
+        event.accept()  # Accept the drop event
+
+class AsyncTabTask(QRunnable):
+    def __init__(self, function, *args):
+        super().__init__()
+        self.function = function
+        self.args = args
+
+    @pyqtSlot()
+    def run(self):
+        self.function(*self.args)
 
 class CodeExecutor(QObject):
     codeResultReady = pyqtSignal(QVariant)
@@ -28,10 +56,8 @@ class DevToolsWindow(QMainWindow):
         self.setWindowTitle("Developer Tools")
         self.resize(800, 600)
         
-        # Default zoom level
-        self.zoom_level = 1.0
+        self.zoom_level = 1.0  # Default zoom level
 
-        # Toolbar with actions
         toolbar = QToolBar("DevTools Toolbar")
         self.addToolBar(toolbar)
         
@@ -43,7 +69,6 @@ class DevToolsWindow(QMainWindow):
         reload_action.triggered.connect(self.dev_tools_view.reload)
         toolbar.addAction(reload_action)
         
-        # Zoom controls in the toolbar
         zoom_in_action = QAction("Zoom In", self)
         zoom_in_action.setShortcut("Ctrl++")
         zoom_in_action.triggered.connect(self.zoom_in)
@@ -54,13 +79,11 @@ class DevToolsWindow(QMainWindow):
         zoom_out_action.triggered.connect(self.zoom_out)
         toolbar.addAction(zoom_out_action)
         
-        # Display current zoom level
         self.zoom_label_action = QAction(f"Zoom: {self.zoom_level * 100:.0f}%", self)
         self.zoom_label_action.setEnabled(False)
         toolbar.addAction(self.zoom_label_action)
 
-        # Set up keyboard shortcuts for zoom in and zoom out
-        self.dev_tools_view.installEventFilter(self)
+        self.dev_tools_view.installEventFilter(self)  # Event filter for keyboard shortcuts
 
     def eventFilter(self, source, event):
         if event.type() == QEvent.Type.KeyPress:
@@ -83,24 +106,42 @@ class DevToolsWindow(QMainWindow):
         self.zoom_label_action.setText(f"Zoom: {self.zoom_level * 100:.0f}%")
 
 class BrowserTab(QWidget):
+    content_loaded = pyqtSignal(str)  # Signal for content load completion
+
     def __init__(self, url, parent=None):
         super().__init__(parent)
-        
         self.layout = QVBoxLayout(self)
+
+        # Create a QWebEngineView and set up its own thread
         self.browser = QWebEngineView()
-        self.browser.setUrl(url)
+        self.browser_thread = QThread()  # New thread for asynchronous loading
+        self.browser.moveToThread(self.browser_thread)
+        self.browser_thread.start()  # Start the thread
+
+        # Load the initial URL asynchronously
+        if url:
+            self.load_async_content(url)
+
         self.layout.addWidget(self.browser)
         self.setLayout(self.layout)
+
+    def load_async_content(self, url):
+        # Function to load URL in a separate thread
+        @pyqtSlot()
+        def load_url():
+            self.browser.setUrl(QUrl(url))
+
+        self.browser_thread.started.connect(load_url)
+        self.browser_thread.start()
 
 class Browser(QMainWindow):
     def __init__(self):
         super().__init__()
         
-        # Initialize QSettings for persistent storage
         self.settings = QSettings("CeruleanCircle", "Web4xBrowser")
 
         self.url_bar = QLineEdit()
-        self.tabs = QTabWidget()
+        self.tabs = DraggableTabWidget()  # Use custom DraggableTabWidget to handle drag events
         self.tabs.setTabsClosable(True)
         self.tabs.tabCloseRequested.connect(self.close_tab)
         self.tabs.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
@@ -118,17 +159,13 @@ class Browser(QMainWindow):
         self.history = []
         self.recently_closed = []
         
-        # Default zoom level for main window
         self.zoom_level = 1.0
 
         self.setup_navigation()
         
-        # Load saved tabs on startup
         self.load_saved_tabs()
-
         self.update_url_bar()
 
-        # If no saved tabs, add a default tab
         if self.tabs.count() == 0:
             self.add_new_tab(QUrl("https://www.example.com"), "Home")
         
@@ -139,27 +176,19 @@ class Browser(QMainWindow):
         nav_bar = QToolBar()
         self.addToolBar(nav_bar)
         
-        # Back button with icon and tooltip
         self.back_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_ArrowBack), "Back", self)
-        self.back_action.setToolTip("Go back to the previous page")
         self.back_action.triggered.connect(lambda: self.current_browser().back())
         nav_bar.addAction(self.back_action)
         
-        # Forward button with icon and tooltip
         self.forward_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_ArrowForward), "Forward", self)
-        self.forward_action.setToolTip("Go forward to the next page")
         self.forward_action.triggered.connect(lambda: self.current_browser().forward())
         nav_bar.addAction(self.forward_action)
         
-        # Reload button with icon and tooltip
         reload_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_BrowserReload), "Reload", self)
-        reload_action.setToolTip("Reload the current page")
         reload_action.triggered.connect(lambda: self.current_browser().reload())
         nav_bar.addAction(reload_action)
         
-        # New Tab button with icon and tooltip
         new_tab_action = QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_FileDialogNewFolder), "New Tab", self)
-        new_tab_action.setToolTip("Open a new tab")
         new_tab_action.triggered.connect(lambda: self.add_new_tab(QUrl("https://www.example.com"), "New Tab"))
         nav_bar.addAction(new_tab_action)
         
@@ -179,7 +208,6 @@ class Browser(QMainWindow):
         recent_history_menu = history_menu.addMenu("Recent History")
         self.update_recent_history_menu(recent_history_menu)
 
-        # Add zoom controls to the three-dot menu
         zoom_menu = three_dot_menu.addMenu("Zoom")
         zoom_in_action = QAction("Zoom In (+)", self)
         zoom_in_action.triggered.connect(self.zoom_in)
@@ -190,14 +218,13 @@ class Browser(QMainWindow):
         zoom_menu.addAction(zoom_out_action)
 
         self.zoom_label_action = QAction(f"Zoom: {self.zoom_level * 100:.0f}%", self)
-        self.zoom_label_action.setEnabled(False)  # Label only
+        self.zoom_label_action.setEnabled(False)
         zoom_menu.addAction(self.zoom_label_action)
 
         three_dot_button = QAction("⋮", self)
         three_dot_button.setMenu(three_dot_menu)
         nav_bar.addAction(three_dot_button)
         
-        # Connect the tab change and URL change events to update navigation actions
         self.tabs.currentChanged.connect(self.update_navigation_actions)
 
     def current_browser(self):
@@ -285,7 +312,6 @@ class Browser(QMainWindow):
         menu.exec(QCursor.pos())
 
     def execute_javascript(self, script):
-        """Run JavaScript code in the current browser page."""
         browser = self.current_browser()
         if browser:
             browser.page().runJavaScript(script)
@@ -302,23 +328,15 @@ class Browser(QMainWindow):
         print(f"Page saved as {file_name}")
 
     def print_page(self):
-        """Print the current page using Qt's QPrinter and QPrintDialog."""
         printer = QPrinter()
-        
-        # Open the print dialog to select a printer and configure settings
         dialog = QPrintDialog(printer, self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
-            # Fetch HTML content from the current page and print it
             current_page = self.current_browser().page()
             current_page.toHtml(lambda html: self.handle_print(html, printer))
 
     def handle_print(self, html, printer):
-        """Handle printing the HTML content to the printer."""
-        # Convert HTML to a QTextDocument for printing
         document = QTextDocument()
         document.setHtml(html)
-        
-        # Print the document to the specified printer
         document.print(printer)
         print("Printing job completed.")
 
@@ -412,30 +430,22 @@ class Browser(QMainWindow):
         script = """
             debugger;
             document.addEventListener("DOMContentLoaded", function() {
-                // Attach drag and drop listeners to the entire document body
                 document.body.addEventListener("dragover", function(e) {
-                    e.preventDefault(); // Allow dropping
+                    e.preventDefault();
                 });
 
                 document.body.addEventListener("drop", function(e) {
-                    e.preventDefault(); // Prevent default browser behavior
-
-                    // Determine the drop target and access dropped data
-                    const target = e.target;
+                    e.preventDefault();
                     const files = e.dataTransfer.files;
                     const textData = e.dataTransfer.getData("text/plain");
 
                     if (files.length > 0) {
                         console.log("File(s) dropped:", files);
-
-                        // If `add()` function exists globally, call it with the dropped file
                         if (typeof add === "function") {
-                            add(files[0]); // Pass the first dropped file to `add`
+                            add(files[0]);
                         }
                     } else if (textData) {
                         console.log("Text dropped:", textData);
-
-                        // Call `add()` with the dropped text data
                         if (typeof this.add === "function") {
                             debugger;
                             this.add(textData);
