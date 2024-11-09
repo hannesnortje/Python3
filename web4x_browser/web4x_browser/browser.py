@@ -506,8 +506,15 @@ class Browser(QMainWindow):
         self.settings.setValue("openTabs", open_tabs)
         event.accept()
 
-app = QApplication(sys.argv)
-QApplication.setApplicationName("Web4x Browser")
-window = Browser()
-window.inject_javascript()
-app.exec()
+def main():
+    """Main function to run the Web4x Browser."""
+    app = QApplication(sys.argv)
+    QApplication.setApplicationName("Web4x Browser")
+    window = Browser()
+    window.inject_javascript()  # Initialize any JavaScript injection
+    window.show()
+    sys.exit(app.exec())
+
+# Ensures the application only runs when executed directly or as a script entry point
+if __name__ == "__main__":
+    main()
