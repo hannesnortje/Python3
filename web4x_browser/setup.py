@@ -6,6 +6,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "PyQt6",  # Specify other dependencies if needed
+        "PyQt6-WebEngine",
     ],
     entry_points={
         "console_scripts": [
