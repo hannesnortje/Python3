@@ -37,10 +37,9 @@
 """
 
 import sys
-from PyQt6.QtCore import QUrl, Qt, QThread, pyqtSlot, pyqtSignal, QObject, QVariant, QDateTime, QSettings, QEvent, QRunnable, QThreadPool, QStandardPaths
+from PyQt6.QtCore import QUrl, Qt, QThread, pyqtSlot, pyqtSignal, QObject, QVariant, QDateTime, QSettings, QEvent, QRunnable, QThreadPool
 from PyQt6.QtGui import QAction, QCursor, QTextDocument
 from PyQt6.QtWidgets import QApplication, QMainWindow, QToolBar, QLineEdit, QMenu, QTabWidget, QWidget, QVBoxLayout, QFileDialog, QDialog, QLabel, QScrollArea, QStyle
-from PyQt6.QtWebEngineCore import QWebEngineProfile, QWebEnginePage
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWebChannel import QWebChannel
 from PyQt6.QtPrintSupport import QPrinter, QPrintDialog
@@ -147,16 +146,12 @@ class DevToolsWindow(QMainWindow):
 class BrowserTab(QWidget):
     content_loaded = pyqtSignal(str)  # Signal for content load completion
 
-    def __init__(self, url, profile, parent=None):
+    def __init__(self, url, parent=None):
         super().__init__(parent)
         self.layout = QVBoxLayout(self)
 
         # Create a QWebEngineView and set up its own thread
         self.browser = QWebEngineView()
-
-        # Set up its profile
-        self.browser.setPage(QWebEnginePage(profile))
-
         self.browser_thread = QThread()  # New thread for asynchronous loading
         self.browser.moveToThread(self.browser_thread)
         self.browser_thread.start()  # Start the thread
@@ -167,7 +162,6 @@ class BrowserTab(QWidget):
 
         self.layout.addWidget(self.browser)
         self.setLayout(self.layout)
-
 
     def load_async_content(self, url):
         # Function to load URL in a separate thread
@@ -210,16 +204,6 @@ class Browser(QMainWindow):
         self.load_saved_tabs()
         self.update_url_bar()
 
-         # Set up a persistent profile
-        storage_path = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation)
-        profile = QWebEngineProfile.defaultProfile()
-        profile.setPersistentStoragePath(storage_path)
-        profile.setPersistentCookiesPolicy(QWebEngineProfile.PersistentCookiesPolicy.ForcePersistentCookies)
-
-        # Pass this profile when creating new tabs
-        self.tabs = DraggableTabWidget()
-        self.setCentralWidget(self.tabs)
-
         if self.tabs.count() == 0:
             self.add_new_tab(QUrl("https://test.wo-da.de/ide"), "Home")
         
@@ -227,7 +211,6 @@ class Browser(QMainWindow):
         self.showMaximized()
 
         self.code_executor.codeResultReady.connect(self.open_new_tab)
-
 
     @pyqtSlot(QVariant)
     def open_new_tab(self, url):
@@ -319,8 +302,8 @@ class Browser(QMainWindow):
         else:
             self.url_bar.clear()
 
-    def add_new_tab(self, url=None, title="New Tab", profile=None):
-        new_tab = BrowserTab(url, profile, self)
+    def add_new_tab(self, url=None, title="New Tab"):
+        new_tab = BrowserTab(url, self)
         
         new_tab.browser.page().setWebChannel(self.channel)
         new_tab.browser.titleChanged.connect(lambda title, tab=new_tab: self.update_tab_title(tab, title))
