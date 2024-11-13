@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Storage Test</title>
+    <script>
+        // Function to save to local storage
+        function saveToLocalStorage() {
+            const key = "testKey";
+            const value = "testValue";
+            localStorage.setItem(key, value);
+            document.getElementById("status").innerText = `Saved: ${key} = ${value}`;
+        }
+
+        // Function to retrieve from local storage
+        function getFromLocalStorage() {
+            const key = "testKey";
+            const value = localStorage.getItem(key);
+            document.getElementById("retrieved").innerText = `Retrieved: ${key} = ${value}`;
+        }
+
+        // Check if value exists on page load
+        window.onload = function() {
+            getFromLocalStorage();
+        }
+    </script>
+</head>
+<body>
+    <h1>Local Storage Test</h1>
+    <p id="status">Press "Save to Storage" to save data.</p>
+    <p id="retrieved">No data retrieved yet.</p>
+
+    <button onclick="saveToLocalStorage()">Save to Storage</button>
+    <button onclick="getFromLocalStorage()">Retrieve from Storage</button>
+</body>
+</html>
