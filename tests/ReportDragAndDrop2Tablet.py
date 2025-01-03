@@ -1,24 +1,38 @@
-import os
-import time
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import os
+import time
 
-# Path to your ChromeDriver
-chrome_driver_path = '/home/hannesn/Downloads/chromedriver-linux64/chromedriver'
+def get_driver(browser):
+    if browser.lower() == "chrome":
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--ignore-certificate-errors")
+        chrome_options.add_argument("--allow-insecure-localhost")
+        service = ChromeService(executable_path='/home/hannesn/Downloads/chromedriver-linux64/chromedriver')
+        return webdriver.Chrome(service=service, options=chrome_options)
+    elif browser.lower() == "firefox":
+        firefox_options = webdriver.FirefoxOptions()
+        firefox_options.add_argument("--ignore-certificate-errors")
+        firefox_options.add_argument("--no-remote")
+        firefox_options.add_argument("--new-instance")
+        service = FirefoxService(executable_path="/usr/local/bin/geckodriver")
+        return webdriver.Firefox(service=service, options=firefox_options)
+    elif browser.lower() == "edge":
+        service = EdgeService(executable_path='/home/hannesn/Downloads/edgedriver_linux64/msedgedriver')
+        return webdriver.Edge(service=service)
+    elif browser.lower() == "safari":
+        return webdriver.Safari()  # SafariDriver must be enabled on macOS
+    else:
+        raise ValueError(f"Unsupported browser: {browser}")
 
-# Set up Chrome options to ignore certificate errors
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument("--ignore-certificate-errors")
-chrome_options.add_argument("--allow-insecure-localhost")
-
-# Set up the ChromeDriver using Service
-service = Service(executable_path=chrome_driver_path)
-
-# Initialize the driver with options
-driver = webdriver.Chrome(service=service, options=chrome_options)
+# Initialize driver for the desired browser
+browser = "firefox"
+driver = get_driver(browser)
 
 # Open the URL
 driver.get("https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/LandingPage/3.1.0/src/html/index.html")
