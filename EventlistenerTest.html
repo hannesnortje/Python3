@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Listener Test with Proxy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            margin-bottom: 10px;
+        }
+        .button-group {
+            margin-top: 10px;
+        }
+        .output {
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .scrollable-window {
+            height: 500px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Interactive Event Listener Testing</h1>
+        <p>This page demonstrates different scenarios for event listeners, including localStorage proxy testing, scrolling, `this` context, and listener replacement.</p>
+
+        <!-- Button Click Listeners -->
+        <div class="section">
+            <h2>1. Button Click Listeners</h2>
+            <p>Tests various methods of adding event listeners to buttons:</p>
+            <div class="button-group">
+                <button id="button1">Test Button 1</button>
+                <div class="output" id="output1"></div>
+            </div>
+        </div>
+
+        <!-- Multiple Listeners and Removal -->
+        <div class="section">
+            <h2>2. Multiple Listeners and Removal</h2>
+            <p>Tests adding multiple listeners to a button and dynamically removing one after a delay.</p>
+            <div class="button-group">
+                <button id="button2">Test Button 2</button>
+                <div class="output" id="output2"></div>
+            </div>
+        </div>
+
+        <!-- LocalStorage Proxy Listener -->
+        <div class="section">
+            <h2>3. LocalStorage Proxy Test</h2>
+            <p>Click the button to update localStorage and observe the detected changes below.</p>
+            <div class="button-group">
+                <button id="proxyTestButton">Test LocalStorage Proxy</button>
+                <div class="output" id="outputProxy"></div>
+            </div>
+        </div>
+
+        <!-- Scrollable Window -->
+        <div class="section">
+            <h2>4. Scrollable Window Event Listener</h2>
+            <p>Scroll within this window to trigger the scroll event. This window has a fixed height of 500px.</p>
+            <div class="scrollable-window" id="scrollableWindow">
+                <div>
+                    <p>Scroll down to test the scroll event listener.</p>
+                    <p>Keep scrolling to trigger more events.</p>
+                    <p>This is an example of an isolated scrollable window.</p>
+                    <p>Scroll more...</p>
+                    <p>And more...</p>
+                    <p>The content continues indefinitely...</p>
+                </div>
+            </div>
+            <div class="output" id="output4"></div>
+        </div>
+
+        <!-- Testing 'this' Context -->
+        <div class="section">
+            <h2>5. Testing `this` Context</h2>
+            <p>Demonstrates the behavior of <code>this</code> in various scenarios:</p>
+            <div class="button-group">
+                <button id="testThisButton">Test `this` in Event Listeners</button>
+                <div class="output" id="output5"></div>
+            </div>
+        </div>
+
+        <!-- Replacing Event Listeners -->
+        <div class="section">
+            <h2>6. Replacing Event Listeners</h2>
+            <p>Test what happens when event listeners are replaced without being explicitly removed.</p>
+            <div class="button-group">
+                <button id="replaceFunctionListener">Replace Function Listener</button>
+                <button id="replaceArrowListener">Replace Arrow Listener</button>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Output helper function
+         */
+        function logMessage(outputElement, message) {
+            const paragraph = document.createElement('p');
+            paragraph.textContent = message;
+            outputElement.appendChild(paragraph);
+        }
+
+        /**************************
+         * Button Click Listeners
+         **************************/
+        const button1 = document.getElementById('button1');
+        const output1 = document.getElementById('output1');
+
+        function handleClick1(value) {
+            logMessage(output1, `Button 1 clicked using standard function (${value} binding).`);
+        }
+
+        const handleClick2 = () => {
+            logMessage(output1, "Button 1 clicked using arrow function (no 'this' binding).");
+        };
+
+        const boundFunction = handleClick1.bind(null);
+
+        button1.addEventListener('click', handleClick1.bind(this));
+        button1.addEventListener('click', handleClick1.bind(this));
+        button1.addEventListener('click', handleClick2);
+        button1.addEventListener('click', handleClick2);
+        button1.addEventListener('click', () => {
+            logMessage(output1, "Button 1 clicked using inline arrow function.");
+        });
+        button1.addEventListener('click', () => {
+            logMessage(output1, "Next time around. Button 1 clicked using inline arrow function.");
+        });
+        button1.addEventListener('click', boundFunction);
+
+        logMessage(output1, `Amount of Listeners: ${getEventListeners(button1)}`)
+
+        /*******************************
+         * Multiple Listeners and Removal
+         *******************************/
+        const button2 = document.getElementById('button2');
+        const output2 = document.getElementById('output2');
+
+        const handleClick3 = () => logMessage(output2, "Button 2 clicked (Arrow Function).");
+        const handleClick4 = function () {
+            logMessage(output2, "Button 2 clicked (Standard Function with 'this').");
+        };
+
+        button2.addEventListener('click', handleClick3);
+        button2.addEventListener('click', handleClick4);
+        setTimeout(() => {
+            button2.removeEventListener('click', handleClick3);
+            logMessage(output2, "Removed one event listener from Button 2.");
+        }, 5000);
+
+        /******************************
+         * Proxy for LocalStorage Changes
+         ******************************/
+        const outputProxy = document.getElementById('outputProxy');
+
+        // Save the original setItem method
+        const originalSetItem = localStorage.setItem;
+
+        // Override localStorage.setItem
+        localStorage.setItem = function (key, value) {
+            const oldValue = localStorage.getItem(key); // Get the old value
+            originalSetItem.call(this, key, value); // Call the original setItem
+            onLocalStorageChange(key, oldValue, value); // Trigger the handler
+        };
+
+        // Custom handler for localStorage changes
+        function onLocalStorageChange(key, oldValue, newValue) {
+            logMessage(outputProxy, `Key "${key}" changed from "${oldValue}" to "${newValue}"`);
+        }
+
+        const proxyTestButton = document.getElementById('proxyTestButton');
+        proxyTestButton.addEventListener('click', () => {
+            const key = 'testProxyKey';
+            const newValue = `Value ${new Date().toLocaleTimeString()}`;
+            localStorage.setItem(key, newValue); // This triggers the custom handler
+        });
+
+        /**************************
+         * Scrollable Window Test
+         **************************/
+        const scrollableWindow = document.getElementById('scrollableWindow');
+        const output4 = document.getElementById('output4');
+
+        scrollableWindow.addEventListener('scroll', () => {
+            logMessage(output4, "Scroll event detected in scrollable window.");
+        });
+
+        /***************************
+         * Testing 'this' Context
+         ***************************/
+        const testThisButton = document.getElementById('testThisButton');
+        const output5 = document.getElementById('output5');
+
+        testThisButton.addEventListener('click', function () {
+            logMessage(output5, `'this' in event listener (standard function): ${this === testThisButton ? "Correctly bound" : "Not bound"}`);
+        });
+
+        testThisButton.addEventListener('click', () => {
+            logMessage(output5, `'this' in event listener (arrow function): ${this === window ? "Window bound" : "Not window bound"}`);
+        });
+
+        /*******************************
+         * Replacing Event Listeners
+         *******************************/
+        const replaceFunctionButton = document.getElementById('replaceFunctionListener');
+        const replaceArrowButton = document.getElementById('replaceArrowListener');
+        const output6 = document.getElementById('output6');
+
+        function initialFunctionListener() {
+            logMessage(output6, "Initial function listener triggered.");
+        }
+
+        function replacementFunctionListener() {
+            logMessage(output6, "Replacement function listener triggered.");
+        }
+
+        const initialArrowListener = () => {
+            logMessage(output6, "Initial arrow function listener triggered.");
+        };
+
+        const replacementArrowListener = () => {
+            logMessage(output6, "Replacement arrow function listener triggered.");
+        };
+
+        replaceFunctionButton.addEventListener('click', initialFunctionListener);
+        replaceArrowButton.addEventListener('click', initialArrowListener);
+
+        replaceFunctionButton.addEventListener('click', () => {
+            replaceFunctionButton.removeEventListener('click', initialFunctionListener);
+            replaceFunctionButton.addEventListener('click', replacementFunctionListener);
+            logMessage(output6, "Function listener replaced.");
+        });
+
+        replaceArrowButton.addEventListener('click', () => {
+            replaceArrowButton.removeEventListener('click', initialArrowListener);
+            replaceArrowButton.addEventListener('click', replacementArrowListener);
+            logMessage(output6, "Arrow function listener replaced.");
+        });
+    </script>
+</body>
+</html>
