@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -23,8 +24,11 @@ def get_driver(browser):
         service = FirefoxService(executable_path="/usr/local/bin/geckodriver")
         return webdriver.Firefox(service=service, options=firefox_options)
     elif browser.lower() == "edge":
+        edge_options = EdgeOptions()
+        edge_options.add_argument("--ignore-certificate-errors")
+        edge_options.add_argument("--allow-insecure-localhost")
         service = EdgeService(executable_path='/home/hannesn/Downloads/edgedriver_linux64/msedgedriver')
-        return webdriver.Edge(service=service)
+        return webdriver.Edge(service=service, options=edge_options)
     elif browser.lower() == "safari":
         return webdriver.Safari()  # SafariDriver must be enabled on macOS
     else:
@@ -34,33 +38,14 @@ def get_driver(browser):
 browser = "chrome"
 driver = get_driver(browser)
 
-# # Path to your ChromeDriver
-# chrome_driver_path = '/home/hannesn/Downloads/chromedriver-linux64/chromedriver'
-
-# # Set up Chrome options to ignore certificate errors
-# chrome_options = webdriver.ChromeOptions()
-# chrome_options.add_argument("--ignore-certificate-errors")
-# chrome_options.add_argument("--allow-insecure-localhost")
-
-# # Set up the ChromeDriver using Service
-# service = Service(executable_path=chrome_driver_path)
-
-# # Initialize the driver with options
-# driver = webdriver.Chrome(service=service, options=chrome_options)
-
-# Open the URL
-driver.get("https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/LandingPage/3.1.0/src/html/index.html")
+driver.get("https://demo.metatrom.net/EAMD.ucp/Components/com/metatrom/EAM/layer5/LandingPage/3.1.0/src/html/index.html")
 
 try:
-    # First reload
-    driver.refresh()
-    print("Page reloaded the first time.")
-    time.sleep(10)  # Wait for 10 seconds to allow local storage and iframes to sync
-
-    # Second reload
-    driver.refresh()
-    print("Page reloaded the second time.")
-    time.sleep(10)  # Wait for 10 seconds to allow local storage and iframes to sync
+    # Reload the page twice to sync
+    for i in range(2):
+        driver.refresh()
+        print(f"Page reloaded {i+1} time(s).")
+        time.sleep(10)
 
     local_storage_data = driver.execute_script("return window.localStorage;")
     print("Local Storage Data:", local_storage_data)

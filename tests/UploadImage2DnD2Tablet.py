@@ -35,13 +35,24 @@ def get_driver(browser):
         raise ValueError(f"Unsupported browser: {browser}")
 
 # Initialize driver for the desired browser
-browser = "firefox"
+browser = "edge"
 driver = get_driver(browser)
 
-# Open the URL
-driver.get("https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/LandingPage/3.1.0/src/html/index.html")
+# Relative path to the file
+relative_path = "tests/download.jpeg"
+
+# Convert relative path to absolute path
+image_path = os.path.abspath(relative_path)
+
+# Verify the file exists
+if not os.path.exists(image_path):
+    raise FileNotFoundError(f"File not found: {image_path}")
+print(f"Using image path: {image_path}")
 
 try:
+    # Open the URL
+    driver.get("https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/LandingPage/3.1.0/src/html/index.html")
+
     # Reload the page twice to sync
     for i in range(2):
         driver.refresh()
@@ -54,18 +65,26 @@ try:
     # Wait for iframes to load
     WebDriverWait(driver, 90).until(lambda d: len(d.find_elements(By.TAG_NAME, "iframe")) > 0)
 
-    # Switch to the iframe containing the draggable element
-    draggable_iframe = WebDriverWait(driver, 90).until(
+    # Switch to the iframe containing the iphone element
+    iphone_iframe = WebDriverWait(driver, 90).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, "iframe[src*='/customer']"))
     )
-    driver.switch_to.frame(draggable_iframe)
+    driver.switch_to.frame(iphone_iframe)
 
-    # Locate the draggable element
-    draggable = WebDriverWait(driver, 90).until(
-        EC.presence_of_element_located((By.ID, "DefaultTableRow_TableRowDefaultView_11"))
+    # Locate the file input element and upload the image
+    file_input = WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.ID, "myfile"))
     )
+    file_input.send_keys(image_path)
+    print(f"Uploaded image: {image_path}")
 
-    # Trigger onDragStart and capture the drag data
+    # Wait for the uploaded image to appear in the draggable list
+    uploaded_image = WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.ID, "DefaultTableRow_TableRowDefaultView_13"))
+    )
+    print("Uploaded image is now draggable.")
+
+    # Trigger dragstart on the uploaded image
     on_drag_start_script = """
     const element = arguments[0];
     const dragStartEvent = new DragEvent('dragstart', {
@@ -79,13 +98,11 @@ try:
         return data;
     }, {});
     """
-    drag_data = driver.execute_script(on_drag_start_script, draggable)
-    print("Extracted Drag Data:", drag_data)
+    drag_data = driver.execute_script(on_drag_start_script, uploaded_image)
+    print("Drag data extracted for the uploaded image.")
 
-    # Switch back to the main document
+    # Switch to the tablet iframe
     driver.switch_to.default_content()
-
-    # Switch to the iframe containing the droppable element
     droppable_iframe = WebDriverWait(driver, 90).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, "iframe[src*='/tablet-customer']"))
     )
@@ -134,16 +151,16 @@ try:
     os.makedirs(screenshot_dir, exist_ok=True)
 
     # Save the screenshot
-    screenshot_path = os.path.join(screenshot_dir, "expand_verification.png")
+    screenshot_path = os.path.join(screenshot_dir, "upload_expand_verification.png")
     driver.save_screenshot(screenshot_path)
     print(f"Screenshot saved at: {screenshot_path}")
 
-    # Pause for observation
+     # Pause for observation
     input("Press Enter to close the browser after observing the drag-and-drop...")
 
 except Exception as e:
     print(f"An error occurred: {e}")
-    driver.save_screenshot("error_screenshot.png")  # Take a screenshot for debugging
+    driver.save_screenshot("error_screenshot.png")  # Screenshot for debugging
 
 finally:
     # Close the browser
