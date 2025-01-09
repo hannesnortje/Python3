@@ -1,178 +1,149 @@
 import sys
 import os
-from PySide6.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QVBoxLayout,
-    QHBoxLayout,
-    QLabel,
-    QPushButton,
-    QComboBox,
-    QTextEdit,
-    QWidget,
-    QMessageBox,
-)
-from PySide6.QtCore import Qt, QProcess
+import threading
+import importlib.util
+from PySide6.QtWidgets import QApplication, QDialog, QVBoxLayout, QLabel, QComboBox, QPushButton
+from PySide6.QtCore import Signal, QObject
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.edge.options import Options as EdgeOptions
 
-# Folder containing test scripts
-TESTS_FOLDER = "tests"
+class BrowserSelectionDialog(QDialog):
+    selection_made = Signal(str, str, str)
 
-
-# Function to dynamically load test scripts
-def load_tests(folder):
-    tests = {}
-    for filename in os.listdir(folder):
-        if filename.endswith(".py"):
-            test_name = filename[:-3]  # Remove .py extension
-            tests[test_name] = os.path.join(folder, filename)
-    return tests
-
-
-# PySide6 MainWindow Class
-class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Enhanced Test Runner")
-        self.setGeometry(100, 100, 600, 400)
+        self.setWindowTitle("Test Runner")
+        self.setFixedWidth(500)
 
-        self.process = None
+        layout = QVBoxLayout()
 
-        # Main Layout
-        main_layout = QVBoxLayout()
+        # Browser selection dropdown
+        layout.addWidget(QLabel("Choose Browser:"))
+        self.browser_dropdown = QComboBox()
+        self.browser_dropdown.addItems(["Chrome", "Firefox", "Edge", "Safari"])
+        layout.addWidget(self.browser_dropdown)
 
-        # Browser Selection
-        browser_layout = QHBoxLayout()
-        browser_label = QLabel("Select Browser:")
-        self.browser_combo = QComboBox()
-        self.browser_combo.addItems(["Chrome", "Firefox", "Edge", "Safari"])
-        browser_layout.addWidget(browser_label)
-        browser_layout.addWidget(self.browser_combo)
+        # Server selection dropdown
+        layout.addWidget(QLabel("Choose Server:"))
+        self.server_dropdown = QComboBox()
+        self.server_dropdown.addItems(["Online", "Localhost"])
+        layout.addWidget(self.server_dropdown)
 
-        # Mode Selection
-        mode_layout = QHBoxLayout()
-        mode_label = QLabel("Select Mode:")
-        self.mode_combo = QComboBox()
-        self.mode_combo.addItems(["Desktop", "Mobile"])
-        mode_layout.addWidget(mode_label)
-        mode_layout.addWidget(self.mode_combo)
+        # Test selection dropdown
+        layout.addWidget(QLabel("Choose Test:"))
+        self.test_dropdown = QComboBox()
+        self.load_tests()
+        layout.addWidget(self.test_dropdown)
 
-        # Test Selection
-        test_layout = QHBoxLayout()
-        test_label = QLabel("Select Test:")
-        self.test_combo = QComboBox()
-        self.tests = load_tests(TESTS_FOLDER)  # Load tests dynamically
-        self.test_combo.addItems(self.tests.keys())
-        test_layout.addWidget(test_label)
-        test_layout.addWidget(self.test_combo)
-
-        # Action Buttons
-        button_layout = QHBoxLayout()
+        # Run Test button
         self.run_button = QPushButton("Run Test")
-        self.run_button.clicked.connect(self.run_selected_test)
+        self.run_button.clicked.connect(self.make_selection)
+        layout.addWidget(self.run_button)
 
-        self.stop_button = QPushButton("Stop Test")
-        self.stop_button.clicked.connect(self.stop_test)
-        self.stop_button.setEnabled(False)
+        # Close button
+        self.close_button = QPushButton("Close")
+        self.close_button.clicked.connect(self.close_application)
+        layout.addWidget(self.close_button)
 
-        self.quit_button = QPushButton("Quit")
-        self.quit_button.clicked.connect(self.close)
+        self.setLayout(layout)
 
-        button_layout.addWidget(self.run_button)
-        button_layout.addWidget(self.stop_button)
-        button_layout.addWidget(self.quit_button)
+    def load_tests(self):
+        """Load test scripts from the `tests` folder."""
+        tests_folder = "tests"
+        if not os.path.exists(tests_folder):
+            os.makedirs(tests_folder)  # Create the folder if it doesn't exist
 
-        # Console Output
-        self.console_output = QTextEdit()
-        self.console_output.setReadOnly(True)
+        test_files = [f for f in os.listdir(tests_folder) if f.endswith(".py")]
+        self.test_dropdown.addItems(test_files)
 
-        # Add Widgets to Main Layout
-        main_layout.addLayout(browser_layout)
-        main_layout.addLayout(mode_layout)
-        main_layout.addLayout(test_layout)
-        main_layout.addLayout(button_layout)
-        main_layout.addWidget(QLabel("Console Output:"))
-        main_layout.addWidget(self.console_output)
+    def make_selection(self):
+        browser = self.browser_dropdown.currentText()
+        server = self.server_dropdown.currentText()
+        test_file = self.test_dropdown.currentText()
+        self.selection_made.emit(browser, server, test_file)
 
-        # Set Main Layout
-        container = QWidget()
-        container.setLayout(main_layout)
-        self.setCentralWidget(container)
+    def close_application(self):
+        QApplication.instance().quit()
 
-    def append_log(self, message):
-        self.console_output.append(message)
-        self.console_output.ensureCursorVisible()
+class SeleniumWorker(QObject):
+    def __init__(self, browser, server, test_file):
+        super().__init__()
+        self.browser = browser
+        self.server = server
+        self.test_file = test_file
 
-    def run_selected_test(self):
-        if self.process and self.process.state() != QProcess.NotRunning:
-            QMessageBox.warning(self, "Warning", "A test is already running.")
-            return
+    def run(self):
+        try:
+            driver = self.get_driver(self.browser)
 
-        # Get selected browser, mode, and test
-        browser = self.browser_combo.currentText()
-        mode = self.mode_combo.currentText()
-        selected_test = self.test_combo.currentText()
+            # Determine the URL based on the server selection
+            url = (
+                "https://demo.metatrom.net/EAMD.ucp/Components/com/metatrom/EAM/layer5/LandingPage/3.1.0/src/html/index.html"
+                if self.server.lower() == "online"
+                else "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/LandingPage/3.1.0/src/html/index.html"
+            )
+            driver.get(url)
+            print(f"Browser: {self.browser}, Server: {self.server}, URL: {url}")
 
-        if selected_test not in self.tests:
-            QMessageBox.critical(self, "Error", "Selected test not found.")
-            return
+            # Dynamically import and run the selected test
+            self.run_test_script(driver)
 
-        test_path = self.tests[selected_test]
+            driver.quit()
 
-        # Initialize QProcess
-        self.process = QProcess(self)
-        self.process.setProgram(sys.executable)
-        self.process.setArguments([test_path, browser, mode])
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
-        # Connect signals
-        self.process.readyReadStandardOutput.connect(self.read_stdout)
-        self.process.readyReadStandardError.connect(self.read_stderr)
-        self.process.finished.connect(self.test_finished)
+    def run_test_script(self, driver):
+        """Run the selected test script."""
+        test_path = os.path.join("tests", self.test_file)
+        spec = importlib.util.spec_from_file_location("test_module", test_path)
+        test_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(test_module)
 
-        # Enable/Disable Buttons
-        self.run_button.setEnabled(False)
-        self.stop_button.setEnabled(True)
+        if hasattr(test_module, "run_test"):
+            print(f"Running test: {self.test_file}")
+            test_module.run_test(driver)
+        else:
+            print(f"The selected test file {self.test_file} does not have a 'run_test(driver)' function.")
 
-        # Start the process
-        self.append_log(f"Starting test '{test_path}' on {browser} in {mode} mode...")
-        self.process.start()
+    def get_driver(self, browser):
+        if browser.lower() == "chrome":
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_argument("--ignore-certificate-errors")
+            chrome_options.add_argument("--allow-insecure-localhost")
+            service = ChromeService(executable_path='/home/hannesn/Downloads/chromedriver-linux64/chromedriver')
+            return webdriver.Chrome(service=service, options=chrome_options)
+        elif browser.lower() == "firefox":
+            firefox_options = webdriver.FirefoxOptions()
+            firefox_options.add_argument("--ignore-certificate-errors")
+            firefox_options.add_argument("--no-remote")
+            firefox_options.add_argument("--new-instance")
+            service = FirefoxService(executable_path="/usr/local/bin/geckodriver")
+            return webdriver.Firefox(service=service, options=firefox_options)
+        elif browser.lower() == "edge":
+            edge_options = EdgeOptions()
+            edge_options.add_argument("--ignore-certificate-errors")
+            edge_options.add_argument("--allow-insecure-localhost")
+            service = EdgeService(executable_path='/home/hannesn/Downloads/edgedriver_linux64/msedgedriver')
+            return webdriver.Edge(service=service, options=edge_options)
+        elif browser.lower() == "safari":
+            return webdriver.Safari()
+        else:
+            raise ValueError(f"Unsupported browser: {browser}")
 
-    def read_stdout(self):
-        output = self.process.readAllStandardOutput().data().decode()
-        self.append_log(output.strip())
-
-    def read_stderr(self):
-        error = self.process.readAllStandardError().data().decode()
-        self.append_log(f"Error: {error.strip()}")
-
-    def test_finished(self):
-        self.append_log("Test completed.")
-        self.run_button.setEnabled(True)
-        self.stop_button.setEnabled(False)
-
-    def stop_test(self):
-        if self.process and self.process.state() != QProcess.NotRunning:
-            self.process.kill()
-            self.append_log("Test stopped.")
-            self.run_button.setEnabled(True)
-            self.stop_button.setEnabled(False)
-
-    def closeEvent(self, event):
-        """Ensure cleanup of running test on UI close."""
-        self.stop_test()
-        event.accept()
-
-
-# Main Function to Run the Application
-def main():
-    # Ensure the tests folder exists
-    if not os.path.exists(TESTS_FOLDER):
-        os.makedirs(TESTS_FOLDER)
-
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec())
-
+def start_selenium(browser, server, test_file):
+    selenium_worker = SeleniumWorker(browser, server, test_file)
+    selenium_thread = threading.Thread(target=selenium_worker.run)
+    selenium_thread.start()
 
 if __name__ == "__main__":
-    main()
+    app = QApplication(sys.argv)
+
+    dialog = BrowserSelectionDialog()
+    dialog.selection_made.connect(start_selenium)
+    dialog.show()
+
+    sys.exit(app.exec())

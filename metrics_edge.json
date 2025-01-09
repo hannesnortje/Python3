@@ -1,0 +1,1308 @@
+{
+    "layoutShifts": [
+        {
+            "hadRecentInput": false,
+            "startTime": 2885.199999999255,
+            "value": 0.0015883235063018526
+        }
+    ],
+    "longtasks": [
+        {
+            "duration": 78,
+            "start": 327.5
+        },
+        {
+            "duration": 52,
+            "start": 1777.199999999255
+        },
+        {
+            "duration": 124,
+            "start": 1885.2999999988824
+        },
+        {
+            "duration": 81,
+            "start": 2141.7999999988824
+        },
+        {
+            "duration": 95,
+            "start": 2307.89999999851
+        },
+        {
+            "duration": 227,
+            "start": 2454.39999999851
+        },
+        {
+            "duration": 155,
+            "start": 2730.2999999988824
+        },
+        {
+            "duration": 69,
+            "start": 3560.89999999851
+        },
+        {
+            "duration": 82,
+            "start": 7013.299999998882
+        },
+        {
+            "duration": 63,
+            "start": 7281.89999999851
+        },
+        {
+            "duration": 822,
+            "start": 7826.299999998882
+        },
+        {
+            "duration": 53,
+            "start": 9247
+        },
+        {
+            "duration": 103,
+            "start": 9489.799999998882
+        },
+        {
+            "duration": 67,
+            "start": 9807.5
+        },
+        {
+            "duration": 93,
+            "start": 10039
+        }
+    ],
+    "navigation": null,
+    "paint": [
+        {
+            "name": "first-paint",
+            "startTime": 641.6999999992549
+        },
+        {
+            "name": "first-contentful-paint",
+            "startTime": 817.1999999992549
+        }
+    ],
+    "resources": [
+        {
+            "duration": 2.799999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer3/connectors/Router/2.4.3/src/html/weBeans/Router.weBean.html",
+            "startTime": 241,
+            "transferSize": 1300
+        },
+        {
+            "duration": 2.600000001490116,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/ceruleanCircle/EAM/3_services/WebBeans/2.4.3/src/js/WebBeans.class.js",
+            "startTime": 250.89999999850988,
+            "transferSize": 7113
+        },
+        {
+            "duration": 2.699999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/org/lesscss/Less/3.8.1/src/js/Less.class.js",
+            "startTime": 260.69999999925494,
+            "transferSize": 6611
+        },
+        {
+            "duration": 2.699999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/org/lesscss/Less/3.8.1/src/html/weBeans/Less.weBean.html",
+            "startTime": 267.5,
+            "transferSize": 421
+        },
+        {
+            "duration": 47.80000000074506,
+            "name": "https://localhost:8443/EAMD.ucp/Components/org/lesscss/Less/3.8.1/dist/autoprefix.js",
+            "startTime": 273.69999999925494,
+            "transferSize": 1311059
+        },
+        {
+            "duration": 3.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/org/lesscss/Less/Theme/3.8.1/src/js/Theme.class.js",
+            "startTime": 405.09999999962747,
+            "transferSize": 11373
+        },
+        {
+            "duration": 2.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/org/lesscss/Less/Theme/3.8.1/src/html/weBeans/DefaultTheme.weBean.html",
+            "startTime": 411.8999999985099,
+            "transferSize": 1038
+        },
+        {
+            "duration": 3.899999998509884,
+            "name": "https://localhost:8443/EAMD.ucp/Components/org/lesscss/Less/3.8.1/dist/less.js",
+            "startTime": 421.5,
+            "transferSize": 505492
+        },
+        {
+            "duration": 5.099999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/org/lesscss/Less/Theme/3.8.1/src/less/DefaultTheme.less",
+            "startTime": 447.09999999962747,
+            "transferSize": 2085
+        },
+        {
+            "duration": 4.899999998509884,
+            "name": "https://localhost:8443/EAMD.ucp/Components/org/lesscss/Less/3.8.1/dist/standardSchema.less",
+            "startTime": 447.5,
+            "transferSize": 3861
+        },
+        {
+            "duration": 6,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/MetatromTheme/3.8.1/src/js/MetatromTheme.class.js",
+            "startTime": 448.5,
+            "transferSize": 3994
+        },
+        {
+            "duration": 3.300000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/org/lesscss/Less/3.8.1/dist/standardSchema.less",
+            "startTime": 464.7999999988824,
+            "transferSize": 3861
+        },
+        {
+            "duration": 4.300000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/org/lesscss/Less/3.8.1/dist/mixins/responsive.less",
+            "startTime": 471.8999999985099,
+            "transferSize": 6289
+        },
+        {
+            "duration": 3.800000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/org/lesscss/Less/3.8.1/dist/mixins/mixins.less",
+            "startTime": 472.2999999988824,
+            "transferSize": 1414
+        },
+        {
+            "duration": 4.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/org/lesscss/Less/3.8.1/dist/mixins/responsive.less",
+            "startTime": 478.2999999988824,
+            "transferSize": 6289
+        },
+        {
+            "duration": 3.800000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/org/lesscss/Less/3.8.1/dist/mixins/mixins.less",
+            "startTime": 478.69999999925494,
+            "transferSize": 1414
+        },
+        {
+            "duration": 3,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/MetatromTheme/3.8.1/src/html/weBeans/MetatromTheme.weBean.html",
+            "startTime": 529.1999999992549,
+            "transferSize": 2538
+        },
+        {
+            "duration": 2.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/LandingPage/3.1.0/src/js/LandingPage.class.js",
+            "startTime": 557.6999999992549,
+            "transferSize": 4108
+        },
+        {
+            "duration": 2.5,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/LandingPage/3.1.0/src/html/weBeans/LandingPage.weBean.html",
+            "startTime": 563.8999999985099,
+            "transferSize": 984
+        },
+        {
+            "duration": 3.199999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/EndpointDevice/3.1.0/src/js/EndpointDevice.class.js",
+            "startTime": 568.6999999992549,
+            "transferSize": 9529
+        },
+        {
+            "duration": 2.699999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/EndpointDevice/3.1.0/src/html/weBeans/EndpointDevice.weBean.html",
+            "startTime": 575.5,
+            "transferSize": 2582
+        },
+        {
+            "duration": 3,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAMD/UcpComponentSupport/2.4.3/src/css/UcpComponentSupport.css",
+            "startTime": 582.1999999992549,
+            "transferSize": 2411
+        },
+        {
+            "duration": 3.300000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer3/connectors/DataConnector/2.4.3/src/js/DataConnector.class.js",
+            "startTime": 583.6999999992549,
+            "transferSize": 6911
+        },
+        {
+            "duration": 2.600000001490116,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer3/connectors/DataConnector/2.4.3/src/html/weBeans/DataConnector.weBean.html",
+            "startTime": 590.3999999985099,
+            "transferSize": 1248
+        },
+        {
+            "duration": 2.5,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer3/DomainEntity/3.1.0/src/js/DomainEntity.class.js",
+            "startTime": 595.2999999988824,
+            "transferSize": 6717
+        },
+        {
+            "duration": 2.299999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer3/DomainEntity/3.1.0/src/html/weBeans/DomainEntity.weBean.html",
+            "startTime": 601,
+            "transferSize": 1246
+        },
+        {
+            "duration": 2.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer3/connectors/rest/RESTConnector/2.4.3/src/js/RESTConnector.class.js",
+            "startTime": 605.3999999985099,
+            "transferSize": 7448
+        },
+        {
+            "duration": 3.199999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer3/connectors/rest/RESTConnector/2.4.3/src/html/weBeans/RESTConnector.weBean.html",
+            "startTime": 610.6999999992549,
+            "transferSize": 1244
+        },
+        {
+            "duration": 3,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer3/connectors/rest/RESTEntity/2.4.3/src/js/RESTEntity.class.js",
+            "startTime": 617.3999999985099,
+            "transferSize": 16969
+        },
+        {
+            "duration": 2.799999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer3/connectors/rest/RESTEntity/2.4.3/src/html/weBeans/RESTEntity.weBean.html",
+            "startTime": 624.5,
+            "transferSize": 1238
+        },
+        {
+            "duration": 2.799999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/JavaScriptObject/2.4.3/src/js/JavaScriptObject.class.js",
+            "startTime": 629.5999999996275,
+            "transferSize": 35390
+        },
+        {
+            "duration": 3.599999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/JavaScriptObject/2.4.3/src/html/weBeans/JavaScriptObject.weBean.html",
+            "startTime": 636.7999999988824,
+            "transferSize": 1972
+        },
+        {
+            "duration": 9,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/JavaScriptObject/2.4.3/src/html/weBeans/DefaultItemView.weBean.html",
+            "startTime": 637.0999999996275,
+            "transferSize": 1762
+        },
+        {
+            "duration": 8.799999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/JavaScriptObject/2.4.3/src/html/weBeans/DefaultOverView.weBean.html",
+            "startTime": 637.5,
+            "transferSize": 1140
+        },
+        {
+            "duration": 8.700000001117587,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/JavaScriptObject/2.4.3/src/html/weBeans/DefaultDetailsView.weBean.html",
+            "startTime": 637.7999999988824,
+            "transferSize": 473
+        },
+        {
+            "duration": 3.100000001490116,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/ceruleanCircle/EAM/5_ux/WODA/DetailsPanel/DefaultPropertyEditor/2.4.3/src/js/DefaultPropertyEditor.class.js",
+            "startTime": 653.8999999985099,
+            "transferSize": 10955
+        },
+        {
+            "duration": 3.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/ceruleanCircle/EAM/5_ux/WODA/DetailsPanel/DefaultPropertyEditor/2.4.3/src/html/weBeans/DefaultPropertyEditor.weBean.html",
+            "startTime": 660.5999999996275,
+            "transferSize": 1199
+        },
+        {
+            "duration": 3.200000001117587,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/Accordion/CollapsiblePanel/3.3.7/src/js/CollapsiblePanel.class.js",
+            "startTime": 667.7999999988824,
+            "transferSize": 3437
+        },
+        {
+            "duration": 3.200000001117587,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/Accordion/CollapsiblePanel/3.3.7/src/html/weBeans/CollapsiblePanel.weBean.html",
+            "startTime": 674.8999999985099,
+            "transferSize": 1116
+        },
+        {
+            "duration": 3,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/Accordion/3.3.7/src/js/Accordion.class.js",
+            "startTime": 681,
+            "transferSize": 3374
+        },
+        {
+            "duration": 2.800000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/Accordion/3.3.7/src/html/weBeans/Accordion.weBean.html",
+            "startTime": 686.8999999985099,
+            "transferSize": 527
+        },
+        {
+            "duration": 2.800000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/3.3.7/src/js/Bootstrap.class.js",
+            "startTime": 692.7999999988824,
+            "transferSize": 2261
+        },
+        {
+            "duration": 2.699999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/3.3.7/src/html/weBeans/Bootstrap.weBean.html",
+            "startTime": 698.1999999992549,
+            "transferSize": 362
+        },
+        {
+            "duration": 2.599999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/org/JQuery/3.2.1-Once/src/js/JQuery.class.js",
+            "startTime": 704.6999999992549,
+            "transferSize": 1985
+        },
+        {
+            "duration": 2.700000001117587,
+            "name": "https://localhost:8443/EAMD.ucp/Components/org/JQuery/3.2.1-Once/src/html/weBeans/JQuery.weBean.html",
+            "startTime": 709.7999999988824,
+            "transferSize": 355
+        },
+        {
+            "duration": 4,
+            "name": "https://localhost:8443/EAMD.ucp/Components/org/JQuery/3.2.1-Once/dist/jquery.js",
+            "startTime": 715.0999999996275,
+            "transferSize": 271758
+        },
+        {
+            "duration": 4.300000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/3.3.7/dist/js/bootstrap.min.js",
+            "startTime": 753.8999999985099,
+            "transferSize": 54449
+        },
+        {
+            "duration": 6.199999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/3.3.7/dist/css/bootstrap.min.css",
+            "startTime": 764.5999999996275,
+            "transferSize": 121843
+        },
+        {
+            "duration": 5.800000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/3.3.7/dist/css/bootstrap-theme.cerulean.css",
+            "startTime": 764.7999999988824,
+            "transferSize": 27501
+        },
+        {
+            "duration": 5.099999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/MDA/M3/Relationship/2.4.3/src/js/Relationship.class.js",
+            "startTime": 766,
+            "transferSize": 20480
+        },
+        {
+            "duration": 2.699999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/MDA/M3/Relationship/2.4.3/src/html/weBeans/Relationship.weBean.html",
+            "startTime": 780.1999999992549,
+            "transferSize": 1164
+        },
+        {
+            "duration": 3.300000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/MDA/M3/Collection/2.4.3/src/js/Collection.class.js",
+            "startTime": 786.3999999985099,
+            "transferSize": 16948
+        },
+        {
+            "duration": 2.5,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/MDA/M3/Collection/2.4.3/src/html/weBeans/Collection.weBean.html",
+            "startTime": 796.6999999992549,
+            "transferSize": 1189
+        },
+        {
+            "duration": 3,
+            "name": "https://localhost:8443/EAMD.ucp/Components/ski/kornel/SlipJS/2.4.3/src/js/SlipJS.class.js",
+            "startTime": 802.1999999992549,
+            "transferSize": 15581
+        },
+        {
+            "duration": 3.799999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/ski/kornel/SlipJS/2.4.3/src/html/weBeans/SlipJS.weBean.html",
+            "startTime": 809.0999999996275,
+            "transferSize": 573
+        },
+        {
+            "duration": 3.599999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/ski/kornel/SlipJS/2.4.3/src/html/weBeans/SlipListElement.weBean.html",
+            "startTime": 809.5,
+            "transferSize": 2054
+        },
+        {
+            "duration": 3.200000001117587,
+            "name": "https://localhost:8443/EAMD.ucp/Components/ski/kornel/SlipJS/2.4.3/dist/js/slip.js",
+            "startTime": 815.7999999988824,
+            "transferSize": 38801
+        },
+        {
+            "duration": 3,
+            "name": "https://localhost:8443/EAMD.ucp/Components/ski/kornel/SlipJS/2.4.3/src/css/SlipJS.css",
+            "startTime": 822.8999999985099,
+            "transferSize": 1631
+        },
+        {
+            "duration": 3,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/Breadcrumb/3.3.7/src/js/Breadcrumb.class.js",
+            "startTime": 823.8999999985099,
+            "transferSize": 6971
+        },
+        {
+            "duration": 3.800000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/Breadcrumb/3.3.7/src/html/weBeans/Breadcrumb.weBean.html",
+            "startTime": 829.7999999988824,
+            "transferSize": 498
+        },
+        {
+            "duration": 3.799999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/Breadcrumb/3.3.7/src/html/weBeans/BreadcrumbContent.weBean.html",
+            "startTime": 830.0999999996275,
+            "transferSize": 567
+        },
+        {
+            "duration": 3,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/src/js/FontAwesome.class.js",
+            "startTime": 839.7999999988824,
+            "transferSize": 10363
+        },
+        {
+            "duration": 2.599999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/src/html/weBeans/FontAwesome.weBean.html",
+            "startTime": 846.5,
+            "transferSize": 1239
+        },
+        {
+            "duration": 3.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/DefaultFile/2.4.3/src/js/DefaultFile.class.js",
+            "startTime": 852.0999999996275,
+            "transferSize": 14889
+        },
+        {
+            "duration": 3.899999998509884,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/DefaultFile/2.4.3/src/html/weBeans/DefaultFile.weBean.html",
+            "startTime": 860.5,
+            "transferSize": 456
+        },
+        {
+            "duration": 3.800000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/DefaultFile/2.4.3/src/html/weBeans/DefaultFileDetailsView.weBean.html",
+            "startTime": 860.7999999988824,
+            "transferSize": 480
+        },
+        {
+            "duration": 3.300000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/src/js/CodeMirrorBox.class.js",
+            "startTime": 867.8999999985099,
+            "transferSize": 13582
+        },
+        {
+            "duration": 3.099999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/src/html/weBeans/CodeMirrorBox.weBean.html",
+            "startTime": 875.0999999996275,
+            "transferSize": 506
+        },
+        {
+            "duration": 3,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer5/html/Textarea/2.4.3/src/js/Textarea.class.js",
+            "startTime": 888.7999999988824,
+            "transferSize": 4436
+        },
+        {
+            "duration": 2.600000001490116,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer5/html/Textarea/2.4.3/src/html/weBeans/Textarea.weBean.html",
+            "startTime": 896.3999999985099,
+            "transferSize": 480
+        },
+        {
+            "duration": 4.299999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/lib/codemirror.js",
+            "startTime": 902.0999999996275,
+            "transferSize": 392451
+        },
+        {
+            "duration": 3.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/hint/show-hint.js",
+            "startTime": 924.0999999996275,
+            "transferSize": 16291
+        },
+        {
+            "duration": 2.5,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/hint/xml-hint.js",
+            "startTime": 929.7999999988824,
+            "transferSize": 5036
+        },
+        {
+            "duration": 3.799999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/hint/css-hint.js",
+            "startTime": 934.0999999996275,
+            "transferSize": 2466
+        },
+        {
+            "duration": 2.899999998509884,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/hint/html-hint.js",
+            "startTime": 939.5,
+            "transferSize": 11642
+        },
+        {
+            "duration": 2.699999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/hint/javascript-hint.js",
+            "startTime": 946.5,
+            "transferSize": 6874
+        },
+        {
+            "duration": 3.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/fold/foldcode.js",
+            "startTime": 951.1999999992549,
+            "transferSize": 5115
+        },
+        {
+            "duration": 2.700000001117587,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/fold/indent-fold.js",
+            "startTime": 957.3999999985099,
+            "transferSize": 1974
+        },
+        {
+            "duration": 2.599999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/fold/xml-fold.js",
+            "startTime": 961.6999999992549,
+            "transferSize": 7000
+        },
+        {
+            "duration": 3.299999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/fold/foldgutter.js",
+            "startTime": 966.0999999996275,
+            "transferSize": 4932
+        },
+        {
+            "duration": 2.900000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/fold/brace-fold.js",
+            "startTime": 972.7999999988824,
+            "transferSize": 4220
+        },
+        {
+            "duration": 2.800000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/fold/comment-fold.js",
+            "startTime": 977.3999999985099,
+            "transferSize": 2462
+        },
+        {
+            "duration": 3.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/search/searchcursor.js",
+            "startTime": 981.7999999988824,
+            "transferSize": 12268
+        },
+        {
+            "duration": 2.600000001490116,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/edit/matchbrackets.js",
+            "startTime": 987.8999999985099,
+            "transferSize": 6559
+        },
+        {
+            "duration": 5.300000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/edit/closebrackets.js",
+            "startTime": 992.3999999985099,
+            "transferSize": 6931
+        },
+        {
+            "duration": 3.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/edit/closetag.js",
+            "startTime": 999.6999999992549,
+            "transferSize": 8313
+        },
+        {
+            "duration": 2.799999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/edit/continuelist.js",
+            "startTime": 1005,
+            "transferSize": 3842
+        },
+        {
+            "duration": 2.599999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/edit/matchtags.js",
+            "startTime": 1009.5999999996275,
+            "transferSize": 2656
+        },
+        {
+            "duration": 2.5,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/edit/trailingspace.js",
+            "startTime": 1013.8999999985099,
+            "transferSize": 1304
+        },
+        {
+            "duration": 3.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/keymap/sublime.js",
+            "startTime": 1018.0999999996275,
+            "transferSize": 25589
+        },
+        {
+            "duration": 3.200000001117587,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/mode/htmlmixed/htmlmixed.js",
+            "startTime": 1025.2999999988824,
+            "transferSize": 5912
+        },
+        {
+            "duration": 3.100000001490116,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/mode/javascript/javascript.js",
+            "startTime": 1030.8999999985099,
+            "transferSize": 36197
+        },
+        {
+            "duration": 6.600000001490116,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/mode/xml/xml.js",
+            "startTime": 1039.3999999985099,
+            "transferSize": 13186
+        },
+        {
+            "duration": 4.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/mode/css/css.js",
+            "startTime": 1048.199999999255,
+            "transferSize": 38072
+        },
+        {
+            "duration": 3.900000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/lint/lint.js",
+            "startTime": 1061.7999999988824,
+            "transferSize": 8910
+        },
+        {
+            "duration": 6.200000001117587,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/lint/html-lint.js",
+            "startTime": 1068.2999999988824,
+            "transferSize": 2161
+        },
+        {
+            "duration": 3.599999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/lint/css-lint.js",
+            "startTime": 1077.2999999988824,
+            "transferSize": 1610
+        },
+        {
+            "duration": 5.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/lint/javascript-lint.js",
+            "startTime": 1082.7999999988824,
+            "transferSize": 2396
+        },
+        {
+            "duration": 4.700000001117587,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/lint/json-lint.js",
+            "startTime": 1092.8999999985099,
+            "transferSize": 1633
+        },
+        {
+            "duration": 14,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/lib/codemirror.css",
+            "startTime": 1099.199999999255,
+            "transferSize": 9584
+        },
+        {
+            "duration": 13.099999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/hint/show-hint.css",
+            "startTime": 1099.5999999996275,
+            "transferSize": 923
+        },
+        {
+            "duration": 13,
+            "name": "https://localhost:8443/EAMD.ucp/Components/net/codemirror/CodeMirrorBox/5.41.0/dist/codemirror/addon/lint/lint.css",
+            "startTime": 1099.8999999985099,
+            "transferSize": 3299
+        },
+        {
+            "duration": 12.799999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/DefaultFolder/2.4.3/src/js/DefaultFolder.class.js",
+            "startTime": 1101.0999999996275,
+            "transferSize": 35724
+        },
+        {
+            "duration": 12.800000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/DefaultFolder/2.4.3/src/html/weBeans/AnimatedFolderOverView.weBean.html",
+            "startTime": 1132.699999999255,
+            "transferSize": 523
+        },
+        {
+            "duration": 12.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/DefaultFolder/2.4.3/src/html/weBeans/DefaultFolder.weBean.html",
+            "startTime": 1133.2999999988824,
+            "transferSize": 701
+        },
+        {
+            "duration": 12.099999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/DefaultFolder/2.4.3/src/html/weBeans/DefaultFolderDetailsView.weBean.html",
+            "startTime": 1133.7999999988824,
+            "transferSize": 583
+        },
+        {
+            "duration": 11.900000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/DefaultFolder/2.4.3/src/html/weBeans/DefaultFolderOverView.weBean.html",
+            "startTime": 1134.199999999255,
+            "transferSize": 927
+        },
+        {
+            "duration": 4,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/AnimatedPanel/2.4.3/src/js/AnimatedPanel.class.js",
+            "startTime": 1157.8999999985099,
+            "transferSize": 13910
+        },
+        {
+            "duration": 5.299999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/AnimatedPanel/2.4.3/src/html/weBeans/AnimatedPanel.weBean.html",
+            "startTime": 1170,
+            "transferSize": 1016
+        },
+        {
+            "duration": 3.599999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/AnimatedPanel/1.0.0/src/css/AnimatedPanel.css",
+            "startTime": 1178.0999999996275,
+            "transferSize": 1498
+        },
+        {
+            "duration": 4.600000001490116,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer1/OnceServices/MimeTypeLoader/1.0.0/src/js/MimeTypeLoader.class.js",
+            "startTime": 1179.8999999985099,
+            "transferSize": 8602
+        },
+        {
+            "duration": 3.099999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer1/OnceServices/MimeTypeLoader/1.0.0/src/html/weBeans/MimeTypeLoader.weBean.html",
+            "startTime": 1191.0999999996275,
+            "transferSize": 1640
+        },
+        {
+            "duration": 4.899999998509884,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer5/html/Image/1.0.0/src/js/Image.class.js",
+            "startTime": 1196.5,
+            "transferSize": 7714
+        },
+        {
+            "duration": 4.5,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/User/2.4.3/src/js/User.class.js",
+            "startTime": 1197.3999999985099,
+            "transferSize": 15752
+        },
+        {
+            "duration": 7.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer5/html/Image/1.0.0/src/html/weBeans/Image.weBean.html",
+            "startTime": 1209.699999999255,
+            "transferSize": 649
+        },
+        {
+            "duration": 7.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer5/html/Image/1.0.0/src/html/weBeans/ImageMinimalItemView.weBean.html",
+            "startTime": 1210.0999999996275,
+            "transferSize": 466
+        },
+        {
+            "duration": 8.300000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer5/html/Image/1.0.0/src/html/weBeans/ImageMinimalDetailsView.weBean.html",
+            "startTime": 1210.3999999985099,
+            "transferSize": 906
+        },
+        {
+            "duration": 8.5,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/Session/2.4.3/src/js/Session.class.js",
+            "startTime": 1213,
+            "transferSize": 4982
+        },
+        {
+            "duration": 8.699999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/User/2.4.3/src/html/weBeans/User.weBean.html",
+            "startTime": 1217.0999999996275,
+            "transferSize": 1057
+        },
+        {
+            "duration": 4.699999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/Session/2.4.3/src/html/weBeans/Session.weBean.html",
+            "startTime": 1236.5999999996275,
+            "transferSize": 422
+        },
+        {
+            "duration": 4.200000001117587,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer3/accounting/Account/2.4.3/src/js/Account.class.js",
+            "startTime": 1241.2999999988824,
+            "transferSize": 11151
+        },
+        {
+            "duration": 5.700000001117587,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer3/accounting/Account/2.4.3/src/html/weBeans/Account.weBean.html",
+            "startTime": 1253.8999999985099,
+            "transferSize": 423
+        },
+        {
+            "duration": 3.5,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer5/Workflow/2.4.3/src/js/Workflow.class.js",
+            "startTime": 1263.5,
+            "transferSize": 8870
+        },
+        {
+            "duration": 3.900000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer5/Workflow/2.4.3/src/html/weBeans/Workflow.weBean.html",
+            "startTime": 1275.7999999988824,
+            "transferSize": 805
+        },
+        {
+            "duration": 6.599999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/ceruleanCircle/EAM/5_ux/WODA/ActionsPanel/2.4.3/src/js/ActionsPanel.class.js",
+            "startTime": 1283.5999999996275,
+            "transferSize": 21800
+        },
+        {
+            "duration": 4.299999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/ceruleanCircle/EAM/5_ux/WODA/ActionsPanel/2.4.3/src/html/weBeans/ActionsPanel.weBean.html",
+            "startTime": 1295.0999999996275,
+            "transferSize": 4440
+        },
+        {
+            "duration": 4.900000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/Combobox/2.4.3/src/js/Combobox.class.js",
+            "startTime": 1309.2999999988824,
+            "transferSize": 16551
+        },
+        {
+            "duration": 5.599999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/Combobox/2.4.3/src/html/weBeans/Combobox.weBean.html",
+            "startTime": 1319.5,
+            "transferSize": 901
+        },
+        {
+            "duration": 6.300000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/Combobox/2.4.3/src/css/combobox.css",
+            "startTime": 1329.3999999985099,
+            "transferSize": 1420
+        },
+        {
+            "duration": 6,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/Panel/3.3.7/src/js/Panel.class.js",
+            "startTime": 1330.3999999985099,
+            "transferSize": 6369
+        },
+        {
+            "duration": 5.099999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/Panel/3.3.7/src/html/weBeans/Panel.weBean.html",
+            "startTime": 1343.2999999988824,
+            "transferSize": 1349
+        },
+        {
+            "duration": 5.100000001490116,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/TabPanel/3.3.7/src/js/TabPanel.class.js",
+            "startTime": 1354.8999999985099,
+            "transferSize": 14818
+        },
+        {
+            "duration": 9.399999998509884,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/TabPanel/3.3.7/src/html/weBeans/TabPanel.weBean.html",
+            "startTime": 1366,
+            "transferSize": 792
+        },
+        {
+            "duration": 10.599999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/TabPanel/3.3.7/src/html/weBeans/TabPanelTabItemView.weBean.html",
+            "startTime": 1366.699999999255,
+            "transferSize": 700
+        },
+        {
+            "duration": 9.900000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/TabPanel/3.3.7/src/html/weBeans/TabPanelTabContentView.weBean.html",
+            "startTime": 1367.699999999255,
+            "transferSize": 508
+        },
+        {
+            "duration": 5.900000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/Button/3.3.7/src/js/Button.class.js",
+            "startTime": 1385.699999999255,
+            "transferSize": 4367
+        },
+        {
+            "duration": 5.099999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/twitter/Bootstrap/Button/3.3.7/src/html/weBeans/Button.weBean.html",
+            "startTime": 1397.7999999988824,
+            "transferSize": 673
+        },
+        {
+            "duration": 5.5,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer3/Filter/2.4.3/src/js/Filter.class.js",
+            "startTime": 1411.5,
+            "transferSize": 2652
+        },
+        {
+            "duration": 5.5,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer3/Filter/2.4.3/src/html/weBeans/Filter.weBean.html",
+            "startTime": 1425.5,
+            "transferSize": 984
+        },
+        {
+            "duration": 17.899999998509884,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/MetatromTheme/3.8.1/src/less/MetatromTheme.less",
+            "startTime": 1436.5,
+            "transferSize": 7092
+        },
+        {
+            "duration": 19.699999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/EndpointDevice/3.1.0/src/less/DefaultEndpointDevice.less",
+            "startTime": 1437,
+            "transferSize": 22236
+        },
+        {
+            "duration": 16.40000000037253,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/LandingPage/3.1.0/src/less/DefaultLandingPage.less",
+            "startTime": 1437.699999999255,
+            "transferSize": 1849
+        },
+        {
+            "duration": 19.59999999962747,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/ceruleanCircle/EAM/5_ux/WODA/DetailsPanel/DefaultPropertyEditor/2.4.3/src/less/DefaultPropertyEditor.less",
+            "startTime": 1438.199999999255,
+            "transferSize": 1052
+        },
+        {
+            "duration": 28.200000001117587,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/fontawesome.less",
+            "startTime": 1438.7999999988824,
+            "transferSize": 804
+        },
+        {
+            "duration": 33.09999999962747,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/regular.less",
+            "startTime": 1439.5,
+            "transferSize": 1078
+        },
+        {
+            "duration": 32.90000000037253,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/solid.less",
+            "startTime": 1440.199999999255,
+            "transferSize": 1071
+        },
+        {
+            "duration": 32,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/brands.less",
+            "startTime": 1441.5999999996275,
+            "transferSize": 1059
+        },
+        {
+            "duration": 31.40000000037253,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/JavaScriptObject/2.4.3/src/less/JavaScriptObject.less",
+            "startTime": 1442.8999999985099,
+            "transferSize": 4009
+        },
+        {
+            "duration": 15.700000001117587,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/MetatromTheme/3.8.1/src/less/MetatromTheme.less",
+            "startTime": 1477.8999999985099,
+            "transferSize": 7092
+        },
+        {
+            "duration": 15,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/EndpointDevice/3.1.0/src/less/DefaultEndpointDevice.less",
+            "startTime": 1478.8999999985099,
+            "transferSize": 22236
+        },
+        {
+            "duration": 13,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/LandingPage/3.1.0/src/less/DefaultLandingPage.less",
+            "startTime": 1479.699999999255,
+            "transferSize": 1849
+        },
+        {
+            "duration": 12.799999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/ceruleanCircle/EAM/5_ux/WODA/DetailsPanel/DefaultPropertyEditor/2.4.3/src/less/DefaultPropertyEditor.less",
+            "startTime": 1480.5,
+            "transferSize": 1052
+        },
+        {
+            "duration": 15.200000001117587,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/fontawesome.less",
+            "startTime": 1481.2999999988824,
+            "transferSize": 804
+        },
+        {
+            "duration": 19.5,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/regular.less",
+            "startTime": 1481.8999999985099,
+            "transferSize": 1078
+        },
+        {
+            "duration": 18.90000000037253,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/solid.less",
+            "startTime": 1482.699999999255,
+            "transferSize": 1071
+        },
+        {
+            "duration": 18.199999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/brands.less",
+            "startTime": 1483.5999999996275,
+            "transferSize": 1059
+        },
+        {
+            "duration": 17.90000000037253,
+            "name": "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer2/JavaScriptObject/2.4.3/src/less/JavaScriptObject.less",
+            "startTime": 1484.199999999255,
+            "transferSize": 4009
+        },
+        {
+            "duration": 4.800000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/MetatromTheme/3.8.1/src/less/MetatromTheme.less",
+            "startTime": 1621.2999999988824,
+            "transferSize": 7092
+        },
+        {
+            "duration": 16.90000000037253,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_variables.less",
+            "startTime": 1645.699999999255,
+            "transferSize": 36380
+        },
+        {
+            "duration": 10.900000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_mixins.less",
+            "startTime": 1646.3999999985099,
+            "transferSize": 1564
+        },
+        {
+            "duration": 13.399999998509884,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_core.less",
+            "startTime": 1647,
+            "transferSize": 591
+        },
+        {
+            "duration": 13.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_larger.less",
+            "startTime": 1647.3999999985099,
+            "transferSize": 754
+        },
+        {
+            "duration": 15.099999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_fixed-width.less",
+            "startTime": 1648,
+            "transferSize": 419
+        },
+        {
+            "duration": 15,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_list.less",
+            "startTime": 1648.3999999985099,
+            "transferSize": 620
+        },
+        {
+            "duration": 22.5,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_bordered-pulled.less",
+            "startTime": 1648.7999999988824,
+            "transferSize": 722
+        },
+        {
+            "duration": 24.40000000037253,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_animated.less",
+            "startTime": 1649.2999999988824,
+            "transferSize": 597
+        },
+        {
+            "duration": 26.09999999962747,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_rotated-flipped.less",
+            "startTime": 1649.5999999996275,
+            "transferSize": 1011
+        },
+        {
+            "duration": 26.200000001117587,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_stacked.less",
+            "startTime": 1649.8999999985099,
+            "transferSize": 778
+        },
+        {
+            "duration": 27.300000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_icons.less",
+            "startTime": 1650.199999999255,
+            "transferSize": 85788
+        },
+        {
+            "duration": 26.299999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_screen-reader.less",
+            "startTime": 1650.5,
+            "transferSize": 418
+        },
+        {
+            "duration": 28.59999999962747,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_variables.less",
+            "startTime": 1652.7999999988824,
+            "transferSize": 36380
+        },
+        {
+            "duration": 29.40000000037253,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_variables.less",
+            "startTime": 1655.0999999996275,
+            "transferSize": 36380
+        },
+        {
+            "duration": 27.90000000037253,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_variables.less",
+            "startTime": 1658.699999999255,
+            "transferSize": 36380
+        },
+        {
+            "duration": 4.599999999627471,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/MetatromTheme/3.8.1/src/less/MetatromTheme.less",
+            "startTime": 1720.7999999988824,
+            "transferSize": 7092
+        },
+        {
+            "duration": 17.300000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_variables.less",
+            "startTime": 1744.199999999255,
+            "transferSize": 36380
+        },
+        {
+            "duration": 14.799999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_mixins.less",
+            "startTime": 1745,
+            "transferSize": 1564
+        },
+        {
+            "duration": 15.300000000745058,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_core.less",
+            "startTime": 1745.3999999985099,
+            "transferSize": 591
+        },
+        {
+            "duration": 15.100000001490116,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_larger.less",
+            "startTime": 1745.8999999985099,
+            "transferSize": 754
+        },
+        {
+            "duration": 14.400000000372529,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_fixed-width.less",
+            "startTime": 1746.8999999985099,
+            "transferSize": 419
+        },
+        {
+            "duration": 23.299999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_list.less",
+            "startTime": 1747.5999999996275,
+            "transferSize": 620
+        },
+        {
+            "duration": 24.40000000037253,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_bordered-pulled.less",
+            "startTime": 1748.0999999996275,
+            "transferSize": 722
+        },
+        {
+            "duration": 24.09999999962747,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_animated.less",
+            "startTime": 1748.5999999996275,
+            "transferSize": 597
+        },
+        {
+            "duration": 23.700000001117587,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_rotated-flipped.less",
+            "startTime": 1749.2999999988824,
+            "transferSize": 1011
+        },
+        {
+            "duration": 23.5,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_stacked.less",
+            "startTime": 1749.7999999988824,
+            "transferSize": 778
+        },
+        {
+            "duration": 25.59999999962747,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_icons.less",
+            "startTime": 1750.0999999996275,
+            "transferSize": 85788
+        },
+        {
+            "duration": 228.59999999962747,
+            "name": "https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700&display=swap",
+            "startTime": 1625.2999999988824,
+            "transferSize": 815
+        },
+        {
+            "duration": 30.799999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_screen-reader.less",
+            "startTime": 1750.5,
+            "transferSize": 418
+        },
+        {
+            "duration": 28.5,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_variables.less",
+            "startTime": 1753.2999999988824,
+            "transferSize": 36380
+        },
+        {
+            "duration": 28.699999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_variables.less",
+            "startTime": 1755.5999999996275,
+            "transferSize": 36380
+        },
+        {
+            "duration": 26.5,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/fontawesome/FontAwesome/5.5.0/dist/less/_variables.less",
+            "startTime": 1759.699999999255,
+            "transferSize": 36380
+        },
+        {
+            "duration": 418.7999999988824,
+            "name": "https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700&display=swap",
+            "startTime": 1724.5999999996275,
+            "transferSize": 0
+        },
+        {
+            "duration": 21,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/LandingPage/3.1.0/src/assets/Aurora%20(18).webp",
+            "startTime": 2404.0999999996275,
+            "transferSize": 235706
+        },
+        {
+            "duration": 19.799999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/EndpointDevice/3.1.0/src/assets/iphone_background.webp",
+            "startTime": 2404.5,
+            "transferSize": 85252
+        },
+        {
+            "duration": 17.699999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/EndpointDevice/3.1.0/src/assets/iphone_background_loading.webp",
+            "startTime": 2405.5,
+            "transferSize": 16050
+        },
+        {
+            "duration": 18.600000001490116,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/EndpointDevice/3.1.0/src/assets/Tablet_Background_web.webp",
+            "startTime": 2405.89999999851,
+            "transferSize": 85438
+        },
+        {
+            "duration": 17.59999999962747,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/EndpointDevice/3.1.0/src/assets/Tablet_Background_web_loading.webp",
+            "startTime": 2406.2999999988824,
+            "transferSize": 14586
+        },
+        {
+            "duration": 18.799999998882413,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/EndpointDevice/3.1.0/src/assets/Macbook_background.webp",
+            "startTime": 2406.5999999996275,
+            "transferSize": 148624
+        },
+        {
+            "duration": 21.100000001490116,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/EndpointDevice/3.1.0/src/assets/Macbook_background_loading.webp",
+            "startTime": 2406.89999999851,
+            "transferSize": 12892
+        },
+        {
+            "duration": 16,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/DeviceSimulation/3.1.0/src/html/DeviceSimulation.2.4.2.html#!/media-player",
+            "startTime": 2370.7999999988824,
+            "transferSize": 1646
+        },
+        {
+            "duration": 18.699999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/DeviceSimulation/3.1.0/src/html/DeviceSimulation.2.4.2.html#!/customer",
+            "startTime": 2374.5999999996275,
+            "transferSize": 1646
+        },
+        {
+            "duration": 162,
+            "name": "https://fonts.gstatic.com/s/poppins/v22/pxiByp8kv8JHgFVrLGT9Z1xlFQ.woff2",
+            "startTime": 2306.89999999851,
+            "transferSize": 8048
+        },
+        {
+            "duration": 21.5,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/DeviceSimulation/3.1.0/src/html/DeviceSimulation.2.4.2.html#!/tablet-customer",
+            "startTime": 2378.5,
+            "transferSize": 1646
+        },
+        {
+            "duration": 25.199999999254942,
+            "name": "https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/DeviceSimulation/3.1.0/src/html/DeviceSimulation.2.4.2.html#!/laptop-customer",
+            "startTime": 2381.5999999996275,
+            "transferSize": 1646
+        },
+        {
+            "duration": 69.09999999962747,
+            "name": "https://localhost:5005/structr/rest/SchemaNode/ui",
+            "startTime": 2402.7999999988824,
+            "transferSize": 0
+        }
+    ]
+}
