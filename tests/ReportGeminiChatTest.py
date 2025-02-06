@@ -53,7 +53,7 @@ def run_test(driver):
         try:
             alert = WebDriverWait(driver, 5).until(EC.alert_is_present())
             print(f"Alert found: {alert.text}. Sending API key. Attempt {attempt+1}.")
-            alert.send_keys("AIzaSyD_VhDh5cZEJJXnJhhDrPGvBZk4bZegXAo")
+            alert.send_keys("AIzaSyDxxxxxxxx")
             alert.accept()
             # Optional: wait a bit to allow the app to process the key
             time.sleep(2)
