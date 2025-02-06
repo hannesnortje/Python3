@@ -57,6 +57,8 @@ class DependencyLoggerApp(QMainWindow):
         chrome_driver_path = "/home/hannesn/Downloads/chromedriver-linux64/chromedriver"
         service = Service(executable_path=chrome_driver_path)  # Correct usage of Service
         chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--ignore-certificate-errors")
+        chrome_options.add_argument("--allow-insecure-localhost")
         chrome_options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
 
         # Initialize the Chrome WebDriver
