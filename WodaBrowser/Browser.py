@@ -75,7 +75,8 @@ from PyQt6.QtWebChannel import QWebChannel
 from PyQt6.QtPrintSupport import QPrinter, QPrintDialog
 from collections import defaultdict
 import typing
-#from file_system_handler import FileSystemHandler
+import os
+from file_system_handler import FileSystemHandler
 from functools import partial
 
 # Constants
@@ -209,6 +210,7 @@ class BrowserTab(QWidget):
 
         self.browser.setContextMenuPolicy(Qt.ContextMenuPolicy.NoContextMenu)
         self.browser.page().loadFinished.connect(self.on_load_finished)
+        self.browser.page().loadFinished.connect(self.inject_scripts)
 
         self.layout.addWidget(self.browser)
         self.setLayout(self.layout)
@@ -219,16 +221,46 @@ class BrowserTab(QWidget):
 
     @pyqtSlot(bool)
     def on_load_finished(self, ok: bool) -> None:
-        if ok:
+        if (ok):
             self.content_loaded.emit(self.browser.url().toString())
         else:
             print(f"Failed to load {self.browser.url().toString()}")
+
+    def inject_scripts(self, ok: bool) -> None:
+        if not ok:
+            return
+
+        # Load qwebchannel.js from file
+        qwebchannel_js_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "js", "qwebchannel.js")
+        with open(qwebchannel_js_path, 'r') as file:
+            qwebchannel_js = file.read()
+
+        # Load browser functions JavaScript code from file
+        browser_functions_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "js", "browser_functions.js")
+        with open(browser_functions_path, 'r') as file:
+            browser_functions_js = file.read()
+
+        # Inject both scripts
+        script = f"""
+            // Inject QWebChannel.js
+            {qwebchannel_js}
+            
+            // Inject browser functions
+            {browser_functions_js}
+        """
+        self.browser.page().runJavaScript(script)
 
 
 class Browser(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
 
+        # Load QWebChannel JavaScript code from file
+        qwebchannel_js_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "js", "qwebchannel.js")
+        with open(qwebchannel_js_path, 'r') as file:
+            self.qwebchannel_js = file.read()
+
+        # Continue with the rest of initialization
         self.settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
         self.setWindowTitle(BROWSER_TITLE)
 
@@ -243,11 +275,10 @@ class Browser(QMainWindow):
 
         self.channel = QWebChannel()
         self.code_executor = CodeExecutor()
-        #self.file_system_handler = FileSystemHandler()
+        self.file_system_handler = FileSystemHandler()
         self.channel.registerObject("codeExecutor", self.code_executor)
-        #self.channel.registerObject("fileSystemHandler", self.file_system_handler)
-
-        #self.file_system_handler.fileRead.connect(self.handle_file_read) # Connect the signal
+        self.channel.registerObject("fileSystemHandler", self.file_system_handler)
+        self.file_system_handler.fileRead.connect(self.handle_file_read)
 
         self.dev_tools_window = DevToolsWindow(self)
         self.dev_tools_window.hide()
@@ -396,16 +427,22 @@ class Browser(QMainWindow):
 
         # Connect signals
         page = new_tab.browser.page()
+        # Set the web channel before anything else
         page.setWebChannel(self.channel)
+
+        # Connect other signals
         new_tab.browser.titleChanged.connect(lambda title, tab=new_tab: self.update_tab_title(tab, title))
         new_tab.browser.urlChanged.connect(self.update_url_bar)
         new_tab.content_loaded.connect(self.record_history)
+        new_tab.browser.urlChanged.connect(self.update_navigation_actions)
 
-        index = self.tabs.addTab(new_tab, title)
-        self.tabs.setCurrentIndex(index)
-
+        # Setup context menu
         new_tab.browser.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         new_tab.browser.customContextMenuRequested.connect(self.open_context_menu)
+
+        # Add tab
+        index = self.tabs.addTab(new_tab, title)
+        self.tabs.setCurrentIndex(index)
 
         # Inject JavaScript after the content is loaded
         page.loadFinished.connect(lambda ok, tab=new_tab: self.inject_javascript(tab) if ok else None)
@@ -581,72 +618,27 @@ class Browser(QMainWindow):
         self.zoom_label_action.setText(f"Zoom: {self.zoom_level * 100:.0f}%")
 
     def inject_javascript(self, tab: BrowserTab) -> None:
-        script = """
-            document.addEventListener("DOMContentLoaded", function() {
-                // Existing drag-and-drop functionality
-                document.body.addEventListener("dragover", function(e) {
-                    e.preventDefault();
-                });
+        # Load browser functions JavaScript code from file
+        browser_functions_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "js", "browser_functions.js")
+        with open(browser_functions_path, 'r') as file:
+            browser_functions_js = file.read()
 
-                document.body.addEventListener("drop", function(e) {
-                    e.preventDefault();
-                    const files = e.dataTransfer.files;
-                    const textData = e.dataTransfer.getData("text/plain");
-
-                    if (files.length > 0) {
-                        console.log("File(s) dropped:", files);
-                        if (typeof add === "function") {
-                            add(files[0]);
-                        }
-                    } else if (textData) {
-                        console.log("Text dropped:", textData);
-                        if (typeof this.add === "function") {
-                            this.add(textData);
-                        }
-                    } else {
-                        console.log("No recognizable data in drop.");
-                    }
-                });
-
-                // New link-click handling to open in a new tab only for target="_blank" links
-                document.body.addEventListener("click", function(e) {
-                    const link = e.target.closest("a[target='_blank']");
-                    if (link) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        window.codeExecutor.executeSignal(link.href);  // Send the link URL to PyQt
-                    }
-                });
-
-                // File System Functions
-                window.createFile = function(filePath, content) {
-                    window.fileSystemHandler.createFile(filePath, content);
-                };
-
-                window.createDirectory = function(dirPath) {
-                    window.fileSystemHandler.createDirectory(dirPath);
-                };
-
-                window.changeFileContent = function(filePath, content) {
-                    window.fileSystemHandler.createFile(filePath, content);
-                };
-
-                window.deleteFile = function(filePath) {
-                    window.fileSystemHandler.deleteFile(filePath);
-                };
-
-                window.deleteDirectory = function(dirPath) {
-                    window.fileSystemHandler.deleteDirectory(dirPath);
-                };
-
-                 window.readFile = function(filePath) {
-                    window.fileSystemHandler.readFile(filePath);
-                };
-            });
+        # Inject both scripts
+        script = f"""
+            // Inject QWebChannel.js
+            {self.qwebchannel_js}
+            
+            // Inject browser functions
+            {browser_functions_js}
         """
-        tab.browser.page().runJavaScript(script)
+        
+        def check_initialization(result):
+            print("JavaScript injection result:", result)
+            
+        tab.browser.page().runJavaScript(script, check_initialization)
 
-    def handle_file_read(self, filePath, content):
+    @pyqtSlot(str, str)
+    def handle_file_read(self, filePath: str, content: str) -> None:
         print(f"File {filePath} read successfully. Content: {content}")
         # You can add logic here to pass the content back to the web page, e.g., using runJavaScript
         script = f"""
@@ -670,7 +662,6 @@ class Browser(QMainWindow):
             widget = self.tabs.widget(i)
             if isinstance(widget, BrowserTab):
                 open_tabs.append(widget.browser.url().toString())
-
         self.settings.setValue("openTabs", open_tabs)
         event.accept()
 
