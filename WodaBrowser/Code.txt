@@ -1,0 +1,7 @@
+// Example usage in JavaScript:
+createFile("my_file.txt", "Hello, world!");
+createDirectory("my_directory");
+changeFileContent("my_file.txt", "New content");
+deleteFile("my_file.txt");
+deleteDirectory("my_directory");
+readFile("my_documents/my_file.txt");

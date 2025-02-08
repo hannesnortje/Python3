@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import threading
 from selenium.common.exceptions import TimeoutException  # <-- new import
+from PySide6.QtWidgets import QApplication, QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton  # new import
 
 class SeleniumWorker(object):
     def __init__(self, browser, test_function):
@@ -39,10 +40,30 @@ class SeleniumWorker(object):
         service = ChromeService(executable_path='/home/hannesn/Downloads/chromedriver-linux64/chromedriver')
         return webdriver.Chrome(service=service, options=chrome_options)
 
+def get_api_key_dialog():
+    # Create a PySide6 dialog to ask for the Gemini API key
+    app = QApplication.instance() or QApplication()
+    dialog = QDialog()
+    dialog.setWindowTitle("Enter Gemini API Key")
+    
+    layout = QVBoxLayout(dialog)
+    layout.addWidget(QLabel("Please enter the Gemini API key:"))
+    line_edit = QLineEdit()
+    layout.addWidget(line_edit)
+    button = QPushButton("OK")
+    layout.addWidget(button)
+    
+    button.clicked.connect(dialog.accept)
+    dialog.exec()
+    return line_edit.text()
+
 def run_test(driver):
     """
     Chat Client Test Logic:
     """
+    # Use PySide6 dialog to prompt for API key before starting the test
+    api_key = get_api_key_dialog()
+    
     # Navigate to chat client test URL
     client_url = "http://localhost:8080/EAMD.ucp/Components/me/hannesnortje/MLConnect/1.0.0/test/html/MLConnectTest.html"
     driver.get(client_url)
@@ -53,7 +74,7 @@ def run_test(driver):
         try:
             alert = WebDriverWait(driver, 5).until(EC.alert_is_present())
             print(f"Alert found: {alert.text}. Sending API key. Attempt {attempt+1}.")
-            alert.send_keys("AIzaSyDxxxxxxxx")
+            alert.send_keys(api_key)
             alert.accept()
             # Optional: wait a bit to allow the app to process the key
             time.sleep(2)
