@@ -13,31 +13,41 @@
             window.createFile = function(filePath, content) {
                 console.log('createFile called', filePath, content);
                 window.fileSystemHandler.createFile(filePath, content);
+                return filePath;
             };
 
             window.createDirectory = function(dirPath) {
                 console.log('createDirectory called', dirPath);
                 window.fileSystemHandler.createDirectory(dirPath);
+                return dirPath;
             };
 
             window.changeFileContent = function(filePath, content) {
                 console.log('changeFileContent called', filePath, content);
                 window.fileSystemHandler.changeFileContent(filePath, content);
+                return filePath;
             };
 
             window.deleteFile = function(filePath) {
                 console.log('deleteFile called', filePath);
                 window.fileSystemHandler.deleteFile(filePath);
+                return filePath;
             };
 
             window.deleteDirectory = function(dirPath) {
                 console.log('deleteDirectory called', dirPath);
                 window.fileSystemHandler.deleteDirectory(dirPath);
+                return dirPath;
             };
 
             window.readFile = function(filePath) {
                 console.log('readFile called', filePath);
-                window.fileSystemHandler.readFile(filePath);
+                return new Promise((resolve, reject) => {
+                    window.readFileCallback = (content) => {
+                        resolve(content);
+                    };
+                    window.fileSystemHandler.readFile(filePath);
+                });
             };
 
             console.log('File system functions initialized and attached to window object');

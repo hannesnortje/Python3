@@ -54,7 +54,7 @@ from PyQt6.QtCore import (
     QMutex,
     QWaitCondition
 )
-from PyQt6.QtGui import QAction, QCursor, QTextDocument
+from PyQt6.QtGui import QAction, QCursor, QTextDocument, QIcon
 from PyQt6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -334,6 +334,11 @@ class Browser(QMainWindow):
         self.url_bar.returnPressed.connect(self.navigate_to_url)
         nav_bar.addWidget(self.url_bar)
 
+        # Add GitHub icon
+        github_action = QAction(QIcon(os.path.join(os.path.dirname(os.path.abspath(__file__)), "github-mark.svg")), "GitHub", self)
+        github_action.triggered.connect(lambda: self.open_github_page("https://github.com/HannesNortje/Web4xBrowser"))  # Replace with your repo URL
+        nav_bar.addAction(github_action)
+
         three_dot_menu = QMenu("More", self)
         self.setup_history_menu(three_dot_menu)
         self.setup_zoom_menu(three_dot_menu)
@@ -343,6 +348,10 @@ class Browser(QMainWindow):
         nav_bar.addAction(three_dot_button)
 
         self.tabs.currentChanged.connect(self.update_navigation_actions)
+
+    def open_github_page(self, url: str) -> None:
+        """Opens the GitHub page in a new tab."""
+        self.add_new_tab(QUrl(url), "GitHub");
 
     def create_action(self, icon: QStyle.StandardPixmap, tip: str, callback: typing.Callable) -> QAction:
         action = QAction(self.style().standardIcon(icon), tip, self)
@@ -643,8 +652,10 @@ class Browser(QMainWindow):
         # You can add logic here to pass the content back to the web page, e.g., using runJavaScript
         script = f"""
             (function(filePath, content) {{
-                let event = new CustomEvent('fileRead', {{ detail: {{ filePath: filePath, content: content }} }});
-                document.dispatchEvent(event);
+                if (window.readFileCallback) {{
+                    window.readFileCallback(content);
+                    window.readFileCallback = null; // Clear the callback after execution
+                }}
             }})('{filePath}', '{content}');
         """
         self.current_browser().page().runJavaScript(script)
