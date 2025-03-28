@@ -1,0 +1,23 @@
+[Desktop Entry]
+Version=1.0
+Name=Woda Browser
+Comment=Web Browser with JavaScript injection capabilities
+GenericName=Web Browser
+Keywords=Internet;WWW;Browser;Web;Explorer
+Exec=wodabrowser %U
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=wodabrowser
+Categories=Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/rss+xml;application/rdf+xml;x-scheme-handler/http;x-scheme-handler/https;
+StartupNotify=true
+Actions=new-window;new-private-window;
+
+[Desktop Action new-window]
+Name=New Window
+Exec=wodabrowser
+
+[Desktop Action new-private-window]
+Name=New Private Window
+Exec=wodabrowser --private

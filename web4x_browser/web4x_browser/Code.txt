@@ -5,10 +5,3 @@ changeFileContent("my_file.txt", "New content");
 deleteFile("my_file.txt");
 deleteDirectory("my_directory");
 readFile("my_documents/my_file.txt");
-
-// Execute Python code from JavaScript
-executePython(`
-print("Hello from Python!")
-`).then(result => {
-    console.log("Python execution result:", result);
-});

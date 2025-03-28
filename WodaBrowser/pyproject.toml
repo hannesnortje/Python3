@@ -1,0 +1,54 @@
+[build-system]
+requires = [
+    "setuptools>=65.5.1",
+    "wheel>=0.38.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wodabrowser"
+version = "0.1.0"
+description = "A PyQt6-based web browser"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    {name = "Hannes Nortjé", email = "hannes@wo-da.de"},
+]
+license = {text = "AGPL-3.0-or-later"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "PyQt6>=6.4.0",
+    "PyQt6-WebEngine>=6.4.0",
+    "PyQt6-Qt6>=6.4.0",
+    "PyQt6-sip>=13.4.0",
+    "packaging>=23.0",
+    "QtPy>=2.3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/hannesnortje/WodaBrowser"
+Repository = "https://github.com/hannesnortje/WodaBrowser.git"
+
+[project.scripts]
+wodabrowser = "wodabrowser.browser:main"
+
+[tool.setuptools]
+packages = ["wodabrowser"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+wodabrowser = [
+    "js/*.js",
+    "github-mark.svg",
+    "icons/*.svg",
+    "icons/*.desktop",
+]

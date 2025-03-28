@@ -1,0 +1,5 @@
+include README.md
+include LICENSE
+include wodabrowser/js/*.js
+include wodabrowser/icons/*.svg
+recursive-include wodabrowser/icons *

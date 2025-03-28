@@ -1,0 +1,30 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.dll
+
+# Distribution / packaging
+dist/
+build/
+sdist/
+*.egg-info/
+*.egg
+*.manifest
+
+# Qt-specific ignores
+*.ui
+*.qrc
+*.moc
+*.rcc
+*.obj
+*.o
+*.exe
+
+# Environments
+.env
+.venv/
+env/
+ENV/
+*.swp
