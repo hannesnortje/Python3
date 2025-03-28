@@ -1,6 +1,7 @@
 import os
 import time
 import logging
+import argparse
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -43,7 +44,7 @@ TARGET_URL = "https://localhost:8443/EAMD.ucp/Components/tla/EAM/layer1/Thinglis
 SCREENSHOT_DIR = "test_screenshots"
 os.makedirs(SCREENSHOT_DIR, exist_ok=True)
 
-def create_chrome_driver(window_name, window_position):
+def create_chrome_driver(window_name, window_position, headless=False):
     """Reuse driver creation from WindowDragMonitor.py"""
     options = Options()
     options.add_argument("--no-sandbox")
@@ -52,14 +53,17 @@ def create_chrome_driver(window_name, window_position):
     options.add_argument("--allow-insecure-localhost")
     options.add_argument(f"--window-position={window_position[0]},{window_position[1]}")
     
-    # Set window size based on window type
-    if window_name == "SOURCE":
-        options.add_argument("--window-size=800,900")
-    else:  # TARGET window
-        options.add_argument("--start-maximized")
+    if headless:
+        options.add_argument("--headless")
+        options.add_argument("--window-size=1920,1080")
+    else:
+        options.add_argument(f"--window-position={window_position[0]},{window_position[1]}")
+        if window_name == "SOURCE":
+            options.add_argument("--window-size=800,900")
+        else:  # TARGET window
+            options.add_argument("--start-maximized")
     
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    
     return webdriver.Chrome(service=Service(CHROME_DRIVER_PATH), options=options)
 
 def wait_for_kernel_load(driver):
@@ -131,21 +135,21 @@ def simulate_drag_and_drop(source_driver, target_driver, source_element, target_
         logging.error(f"Error during drag and drop simulation: {e}")
         return False
 
-def perform_single_test(config):
+def perform_single_test(config, headless=False):
     """Perform drag and drop test for a single panel configuration"""
     source_driver = None
     target_driver = None
     
     try:
         # Setup source window
-        source_driver = create_chrome_driver("SOURCE", (0, 0))
+        source_driver = create_chrome_driver("SOURCE", (0, 0), headless)
         source_driver.get(config["source_url"])
         
         time.sleep(2)
         take_screenshot(source_driver, f"1_{config['name']}_source_initial")
         
         # Setup target window
-        target_driver = create_chrome_driver("TARGET", (820, 0))
+        target_driver = create_chrome_driver("TARGET", (820, 0), headless)
         target_driver.get(TARGET_URL)
         
         if not wait_for_kernel_load(target_driver):
@@ -180,15 +184,15 @@ def perform_single_test(config):
                 except Exception as e:
                     logging.warning(f"Error closing window: {e}")
 
-def perform_drag_and_drop_test():
+def perform_drag_and_drop_test(headless=False):
     """Run all configured tests sequentially in the same browser windows"""
     source_driver = None
     target_driver = None
     
     try:
         # Setup initial windows once
-        source_driver = create_chrome_driver("SOURCE", (0, 0))
-        target_driver = create_chrome_driver("TARGET", (820, 0))
+        source_driver = create_chrome_driver("SOURCE", (0, 0), headless)
+        target_driver = create_chrome_driver("TARGET", (820, 0), headless)
         
         # Load target window once
         target_driver.get(TARGET_URL)
@@ -238,6 +242,10 @@ def perform_drag_and_drop_test():
                     logging.warning(f"Error closing window: {e}")
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Run Window Main part drag and drop test')
+    parser.add_argument('--headless', action='store_true', help='Run in headless mode')
+    args = parser.parse_args()
+
     # Setup logging
     logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-    perform_drag_and_drop_test()
+    perform_drag_and_drop_test(args.headless)

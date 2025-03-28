@@ -230,6 +230,13 @@ def perform_gauge_interactions(target_driver):
         logging.error(f"Gauge interactions failed: {e}")
         raise
 
+def take_screenshot(driver, name, headless=False):
+    """Take a screenshot and save it with timestamp"""
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = os.path.join(SCREENSHOT_DIR, f"{name}{'_headless' if headless else ''}_{timestamp}.png")
+    driver.save_screenshot(filename)
+    logging.info(f"Screenshot saved {'(headless)' if headless else ''}: {filename}")
+
 def perform_gauge_test(headless=False):
     """Perform the Canvas Gauges drag and drop test"""
     source_driver = None
@@ -251,8 +258,8 @@ def perform_gauge_test(headless=False):
         logging.info("Target window initialization period completed")
         
         # Take initial screenshots
-        source_driver.save_screenshot(os.path.join(SCREENSHOT_DIR, "1_source_initial.png"))
-        target_driver.save_screenshot(os.path.join(SCREENSHOT_DIR, "2_target_initial.png"))
+        take_screenshot(source_driver, "1_source_initial", headless)
+        take_screenshot(target_driver, "2_target_initial", headless)
         
         # Find source element (component XML)
         source_element = WebDriverWait(source_driver, 10).until(
@@ -270,7 +277,7 @@ def perform_gauge_test(headless=False):
         
         # Wait for component to load and take final screenshot
         time.sleep(5)
-        target_driver.save_screenshot(os.path.join(SCREENSHOT_DIR, "3_after_drop.png"))
+        take_screenshot(target_driver, "3_after_drop", headless)
         logging.info("Canvas Gauge component added successfully")
         
         # Add item view move after initial component drop
@@ -282,7 +289,7 @@ def perform_gauge_test(headless=False):
         perform_gauge_interactions(target_driver)
         
     except Exception as e:
-        logging.error(f"Test failed: {e}")
+        logging.error(f"Test failed in {'headless' if headless else 'normal'} mode: {e}")
         raise
         
     finally:
