@@ -304,6 +304,21 @@ class VersionUpgradeApp(QWidget):
         self.save_window_state()
         super().closeEvent(event)
 
+    def is_directory_empty(self, path: str) -> bool:
+        """
+        Check if a directory is empty (contains no files, only empty subdirectories allowed).
+        
+        Parameters:
+        - path (str): The directory path to check.
+        
+        Returns:
+        - bool: True if the directory contains no files, False otherwise.
+        """
+        for root, dirs, files in os.walk(path):
+            if files:
+                return False
+        return True
+
     def log(self, message: str, level: str = "info") -> None:
         """Log a message to the log area and logger."""
         timestamp = datetime.now().strftime("%H:%M:%S")
@@ -444,17 +459,28 @@ class VersionUpgradeApp(QWidget):
                     folder_path = os.path.join(root, folder)
                     new_folder_path = os.path.join(root, new_version)
 
+                    target_exists_empty = False
                     if os.path.exists(new_folder_path):
-                        self.log(f"Skipping: {new_folder_path} (already exists)", "warning")
-                        continue
+                        if self.is_directory_empty(new_folder_path):
+                            target_exists_empty = True
+                            # Proceed with copying into the empty directory
+                        else:
+                            self.log(f"Skipping: {new_folder_path} (already exists and not empty)", "warning")
+                            continue
 
                     if not is_dry_run:
-                        self.log(f"Copying: {folder_path} -> {new_folder_path}")
+                        if target_exists_empty:
+                            self.log(f"Copying into existing empty folder: {folder_path} -> {new_folder_path}")
+                        else:
+                            self.log(f"Copying: {folder_path} -> {new_folder_path}")
                         self.copy_directory(folder_path, new_folder_path)
                         self.upgrade_specific_subdirectories(new_folder_path, old_version, new_version, 
                                                             last_word, is_dry_run, create_backup)
                     else:
-                        self.log(f"[DRY RUN] Would copy: {folder_path} -> {new_folder_path}")
+                        if target_exists_empty:
+                            self.log(f"[DRY RUN] Would copy into existing empty folder: {folder_path} -> {new_folder_path}")
+                        else:
+                            self.log(f"[DRY RUN] Would copy: {folder_path} -> {new_folder_path}")
                         # Scan for what would be changed
                         self.scan_for_changes(folder_path, old_version, new_version, last_word)
                     
