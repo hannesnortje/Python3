@@ -1,11 +1,12 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QPushButton, QLineEdit, QTreeWidget, QTreeWidgetItem, QWidget
+from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QPushButton, QLineEdit, QTreeWidget, QTreeWidgetItem, QWidget, QFileDialog, QMessageBox
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service  # Corrected import
 import json
 import sys
 import time
 from urllib.parse import urlparse
+from datetime import datetime
 
 class DependencyLoggerApp(QMainWindow):
     def __init__(self):
@@ -36,13 +37,21 @@ class DependencyLoggerApp(QMainWindow):
         self.dependency_tree.setHeaderLabels(["Dependencies"])
         layout.addWidget(self.dependency_tree)
 
+        # Save Button
+        self.save_button = QPushButton("Save Tree to Markdown", self)
+        layout.addWidget(self.save_button)
+
         # Close Button
         self.close_button = QPushButton("Close", self)
         layout.addWidget(self.close_button)
 
         # Connect the buttons to their actions
         self.retrieve_button.clicked.connect(self.retrieve_dependencies)
+        self.save_button.clicked.connect(self.save_tree_to_markdown)
         self.close_button.clicked.connect(self.close)
+        
+        # Store URLs for saving
+        self.current_urls = []
 
     def retrieve_dependencies(self):
         url = self.url_input.text()
@@ -86,7 +95,8 @@ class DependencyLoggerApp(QMainWindow):
                 if url and url not in urls:  # Avoid duplicate URLs
                     urls.append(url)
 
-        # Build and display the dependency tree
+        # Store URLs and build the dependency tree
+        self.current_urls = urls
         self.build_dependency_tree(urls)
 
     def build_dependency_tree(self, urls):
@@ -134,6 +144,85 @@ class DependencyLoggerApp(QMainWindow):
         self.dependency_tree.addTopLevelItem(root_item)
         add_items(root_item, tree)
         self.dependency_tree.expandAll()  # Expand all items in the tree for better visibility
+
+    def save_tree_to_markdown(self):
+        """Save the dependency tree to a markdown file"""
+        if not self.current_urls:
+            QMessageBox.warning(self, "No Data", "Please retrieve dependencies first before saving.")
+            return
+        
+        # Get the original URL
+        original_url = self.url_input.text()
+        
+        # Open file dialog to select save location
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        default_filename = f"dependency_tree_{timestamp}.md"
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Save Dependency Tree",
+            default_filename,
+            "Markdown Files (*.md);;All Files (*)"
+        )
+        
+        if not file_path:
+            return  # User cancelled
+        
+        try:
+            # Build the tree structure
+            tree = {}
+            for url in self.current_urls:
+                parsed_url = urlparse(url)
+                parts = [parsed_url.scheme + "://", parsed_url.netloc] + parsed_url.path.strip("/").split("/")
+                
+                current_level = tree
+                for part in parts:
+                    if part not in current_level:
+                        current_level[part] = {"_full_url": url}
+                    current_level = current_level[part]
+            
+            # Generate markdown content
+            markdown_lines = []
+            markdown_lines.append(f"# Dependency Tree\n")
+            markdown_lines.append(f"**Source URL:** {original_url}\n")
+            markdown_lines.append(f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+            markdown_lines.append(f"**Total Dependencies:** {len(self.current_urls)}\n")
+            markdown_lines.append("\n---\n\n")
+            
+            # Function to recursively generate markdown tree
+            def generate_markdown_tree(subtree, indent_level=0):
+                indent = "  " * indent_level
+                for key, value in subtree.items():
+                    if key == "_full_url":
+                        continue
+                    
+                    full_url = value.get("_full_url", "")
+                    if full_url:
+                        markdown_lines.append(f"{indent}- **{key}**\n")
+                        markdown_lines.append(f"{indent}  - URL: `{full_url}`\n")
+                    else:
+                        markdown_lines.append(f"{indent}- {key}\n")
+                    
+                    # Recurse for children
+                    if isinstance(value, dict):
+                        generate_markdown_tree(value, indent_level + 1)
+            
+            markdown_lines.append("## Dependency Structure\n\n")
+            generate_markdown_tree(tree)
+            
+            # Add full URL list at the end
+            markdown_lines.append("\n---\n\n")
+            markdown_lines.append("## Complete URL List\n\n")
+            for i, url in enumerate(self.current_urls, 1):
+                markdown_lines.append(f"{i}. `{url}`\n")
+            
+            # Write to file
+            with open(file_path, 'w', encoding='utf-8') as f:
+                f.writelines(markdown_lines)
+            
+            QMessageBox.information(self, "Success", f"Dependency tree saved to:\n{file_path}")
+            
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to save file:\n{str(e)}")
 
 # Initialize the application
 if __name__ == "__main__":
