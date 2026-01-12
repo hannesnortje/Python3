@@ -1,18 +1,11 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-# Path to your ChromeDriver
-chrome_driver_path = '/home/hannesn/Downloads/chromedriver-linux64/chromedriver'
-
-# Set up the ChromeDriver using Service
-service = Service(executable_path=chrome_driver_path)
-
-# Initialize the driver
-driver = webdriver.Chrome(service=service)
+# Initialize the driver (Selenium will auto-manage ChromeDriver)
+driver = webdriver.Chrome()
 
 # Open the new local URL
 driver.get("https://localhost:8443/EAMD.ucp/Components/com/metatrom/EAM/layer5/LandingPage/3.1.0/src/html/index.html")

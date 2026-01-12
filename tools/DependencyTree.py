@@ -53,16 +53,14 @@ class DependencyLoggerApp(QMainWindow):
             self.dependency_tree.addTopLevelItem(root_item)
             return
 
-        # Path to ChromeDriver
-        chrome_driver_path = "/home/hannesn/Downloads/chromedriver-linux64/chromedriver"
-        service = Service(executable_path=chrome_driver_path)  # Correct usage of Service
+        # Configure Chrome options
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--ignore-certificate-errors")
         chrome_options.add_argument("--allow-insecure-localhost")
         chrome_options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
 
-        # Initialize the Chrome WebDriver
-        driver = webdriver.Chrome(service=service, options=chrome_options)
+        # Initialize the Chrome WebDriver (Selenium will auto-manage the driver)
+        driver = webdriver.Chrome(options=chrome_options)
         driver.get(url)
 
         # Wait for 5 seconds to allow the site to load fully

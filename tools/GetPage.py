@@ -1,15 +1,8 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 import time
 
-# Path to your ChromeDriver
-chrome_driver_path = '/home/hannesn/Downloads/chromedriver-linux64/chromedriver'
-
-# Set up the ChromeDriver using Service
-service = Service(executable_path=chrome_driver_path)
-
-# Initialize the driver
-driver = webdriver.Chrome(service=service)
+# Initialize the driver (Selenium will auto-manage ChromeDriver)
+driver = webdriver.Chrome()
 
 # Navigate to the CUADDS page and log in
 driver.get('https://www.cuadds.com/signin')
